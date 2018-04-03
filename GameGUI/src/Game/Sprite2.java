@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import Game.DirectionsTuple.DirectionX;
+
 public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 	private Image[][] COSTUMES;
 	public BufferedImage bufferedImage;
@@ -75,10 +77,19 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 			break;
 		}
 	}
-	
+
 	@Override
-	public void moveToLocation(int newX,int newY){
-		
+	public void moveToLocation(int newX, int newY) {
+		super.moveToLocation(newX, newY);
+		if (currentDirections.directionX == DirectionX.MOVE_RIGHT
+				|| currentDirections.directionX == DirectionX.LOOK_RIGHT) {
+			currentRow = 0;
+			currentColumn = getNextColumn();
+		} else {
+			currentRow = 1;
+			currentColumn = getNextColumn();
+
+		}
 	}
 
 	public int getNextColumn() {
