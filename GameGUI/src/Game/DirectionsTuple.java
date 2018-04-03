@@ -6,11 +6,11 @@ public class DirectionsTuple {
 	}
 
 	enum DirectionY {
-		UP, DOWN, LOOK_UP, LOOK_DOWN;
+		UP, DOWN, STILL;
 	}
 
 	DirectionX directionX = DirectionX.LOOK_RIGHT;
-	DirectionY directionY = DirectionY.LOOK_UP;
+	DirectionY directionY = DirectionY.STILL;
 
 	public DirectionX getDirectionX() {
 		return directionX;

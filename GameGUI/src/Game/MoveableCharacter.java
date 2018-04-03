@@ -111,7 +111,7 @@ public abstract class MoveableCharacter extends JComponent {
 	public void moveOneStep() {
 
 		System.out.println(currentDirections.directionY);
-		
+
 		switch (currentDirections.directionX) {
 		case MOVE_RIGHT:
 			x = x + speedX;
@@ -134,6 +134,19 @@ public abstract class MoveableCharacter extends JComponent {
 			break;
 		}
 
+		repaint();
+	}
+
+	public void moveToLocation(int newX, int newY) {
+		// handle x directions
+		if (newX > x)
+			currentDirections.directionX = DirectionX.LOOK_RIGHT;
+		else if (newX < x)
+			currentDirections.directionX = DirectionX.LOOK_LEFT;
+		// handle y directions
+		
+		this.x = newX;
+		this.y = newY;
 		repaint();
 	}
 
@@ -163,7 +176,7 @@ public abstract class MoveableCharacter extends JComponent {
 
 	public void fall(Surface[] surfaces) {
 		// the character is in a middle of a jump.
-		if (isJumping) 
+		if (isJumping)
 			return;
 		for (Surface surface : surfaces) {
 
@@ -172,7 +185,7 @@ public abstract class MoveableCharacter extends JComponent {
 				// the character is above the surface on the x axis.
 				if (this.x + this.WIDTH >= surface.getX() && this.x <= surface.getX() + surface.getWidth()) {
 					// move the character towards the surface
-					currentDirections.directionY = DirectionY.LOOK_UP;
+					currentDirections.directionY = DirectionY.STILL;
 					return;
 				}
 			}

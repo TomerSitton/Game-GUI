@@ -75,6 +75,11 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 			break;
 		}
 	}
+	
+	@Override
+	public void moveToLocation(int newX,int newY){
+		
+	}
 
 	public int getNextColumn() {
 		if (currentColumn == COLUMNS - 1)
