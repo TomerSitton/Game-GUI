@@ -108,7 +108,7 @@ public abstract class MoveableCharacter extends JComponent {
 		return speedY;
 	}
 
-	public void move() {
+	public void moveByDirection() {
 
 		System.out.println(currentDirections.directionY);
 		

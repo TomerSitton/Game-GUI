@@ -55,13 +55,13 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 
 	@Override
 	public void oneCycle(Surface[] surfaces) {
-		move();
+		moveByDirection();
 		fall(surfaces);
 	}
 
 	@Override
-	public void move() {
-		super.move();
+	public void moveByDirection() {
+		super.moveByDirection();
 		switch (currentDirections.directionX) {
 		case MOVE_RIGHT:
 			currentRow = 0;
