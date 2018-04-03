@@ -143,7 +143,6 @@ public abstract class MoveableCharacter extends JComponent {
 			currentDirections.directionX = DirectionX.LOOK_RIGHT;
 		else if (newX < x)
 			currentDirections.directionX = DirectionX.LOOK_LEFT;
-		// handle y directions
 		
 		this.x = newX;
 		this.y = newY;
@@ -184,7 +183,7 @@ public abstract class MoveableCharacter extends JComponent {
 			if (this.y + this.HEIGHT >= surface.getY()) {
 				// the character is above the surface on the x axis.
 				if (this.x + this.WIDTH >= surface.getX() && this.x <= surface.getX() + surface.getWidth()) {
-					// move the character towards the surface
+					// the character is standing
 					currentDirections.directionY = DirectionY.STILL;
 					return;
 				}
