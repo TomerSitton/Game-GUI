@@ -84,10 +84,6 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 		return currentColumn;
 	}
 
-	public void moveToLocation(int x, int y) {
-
-	}
-
 	@Override
 	public void draw(Graphics g) {
 		g.drawImage(COSTUMES[currentRow][currentColumn], getX(), getY(), null);
