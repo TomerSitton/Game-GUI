@@ -29,7 +29,7 @@ public interface Network {
 	 */
 	public static void sendDataToServer(DataOutputStream outputStreamToServer, String data) {
 		try {
-			outputStreamToServer.writeBytes(data);
+			outputStreamToServer.write(data.getBytes());
 		} catch (IOException e) {
 			System.out.println("IO exeption catched while trying to send data to the server");
 			e.printStackTrace();
