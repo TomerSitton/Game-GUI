@@ -1,9 +1,19 @@
 package Game;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
 public class Player extends Sprite2 {
+
+	// client's socket and I/O streams
+	private Socket socket;
+	private BufferedReader inputStreamFromServer;
+	private DataOutputStream outputStreamToServer;
+
 	public static final String URL = "img/sprite-boy-running.png";
 	public static final int ROWS = 2;
 	public static final int COLUMNS = 8;
@@ -11,106 +21,63 @@ public class Player extends Sprite2 {
 	public static final int HEIGHT = 150;
 	public static final int SPEED_X = 15;
 	public static final int SPEED_Y = 10;
-//	private ArrayList<FireAttack> attacks = new ArrayList<>();
 
 	public Player(int x, int y) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
+		initSocketStreams();
 	}
 
-//	public void attack() {
-//		// if (!attacks.isEmpty() && (System.currentTimeMillis()
-//		// - attacks.get(attacks.size() - 1).getCreateTime() <
-//		// FireAttack.WAIT_TIME))
-//		// return;
-//		FireAttack attack;
-//		attack = new FireAttack(getX() + getWidth() / 2, getY() + getHeight() / 2, this);
-//		if (getDirectionX() > 0)
-//			attack.setDirectionX(MOVE_TO_THE_RIGHT);
-//		else
-//			attack.setDirectionX(MOVE_TO_THE_LEFT);
-//		attacks.add(attack);
-//	}
+	/**
+	 * initialize the client's sockets and I/O streams
+	 */
+	private void initSocketStreams() {
+		try {
+			socket = new Socket(Network.SERVER_IP, Network.SERVER_PORT);
+			inputStreamFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			outputStreamToServer = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * send data to the server. </br>
+	 * In the game, the data sent to the the server is represented like this:
+	 * </br>
+	 * </br>
+	 * "(newX,newY)\n" </br>
+	 * </br>
+	 * so if for example my character moved from (0,0) to (10,12), the data to
+	 * be sent to the server will look like this:</br>
+	 * "(10,12)\n"
+	 * 
+	 * @param data
+	 *            - the data to be sent to the server
+	 */
+	public void sendData(String data) {
+		Network.sendDataToServer(this.outputStreamToServer, data);
+	}
+
+	/**
+	 * Receive data from the server.</br>
+	 * The data should look like this: "(newX1,newY1) : (newX2,newY2) :
+	 * (newX3,newY3) : (newX4,newY4)\n" </br>
+	 * </br>
+	 * These numbers represent the locations of the 4 players at the given time
+	 * 
+	 * @return - a string representing the locations of all players
+	 */
+	public String recieveData() {
+		return Network.recieveDataFromServer(this.inputStreamFromServer);
+	}
 
 	@Override
-	public void oneCycle(Surface [] surfaces) {
+	public void oneCycle(Surface[] surfaces) {
 		super.oneCycle(surfaces);
-//		attacks.forEach((at) -> at.move(at.getDirectionX()));
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-//		if (!attacks.isEmpty()) {
-//			attacks.forEach((atk) -> atk.draw(g));
-//		}
 	}
-//
-//	public ArrayList<FireAttack> getAttacks() {
-//		return attacks;
-//	}
-
-
-//	public class FireAttack extends Sprite2 implements Runnable {
-//		public static final String URL = "img/fireAttack.png";
-//		public static final int ROWS = 2;
-//		public static final int COLUMNS = 6;
-//		public static final int WIDTH = 50;
-//		public static final int HEIGHT = 50;
-//		public static final int SPEED_X = 15;
-//		public static final int SPEED_Y = 0;
-//		private Player player;
-//		public static final int WAIT_TIME = 500;
-//		private long createTime = 0;
-//
-//		public FireAttack(int x, int y, Player player) {
-//			super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
-//			createTime = System.currentTimeMillis();
-//			this.player = player;
-//			this.player.getParent().add(this);
-//			Thread t = new Thread(this);
-//			t.start();
-//		}
-//
-//		public boolean hit(Sprite2... sprite) {
-//			for (int i = 0; i < sprite.length; i++) {
-//				if (this.getX() + this.getWidth() >= sprite[i].getX()
-//						&& this.getX() <= sprite[i].getX() + sprite[i].getWidth())
-//					if (this.getY() + this.getHeight() >= sprite[i].getY()
-//							&& this.getY() <= sprite[i].getY() + sprite[i].getHeight())
-//						return true;
-//			}
-//			return false;
-//		}
-//
-//		@Override
-//		public void run() {
-//			while (getParent() != null) {
-//				// checks if the shot left the frame
-//				if (getX() > getParent().getWidth() || getX() < 0) {
-//					this.removeSprite();
-//				}
-//				// checks if hit an enemy
-//				for (Sprite2 sprite : Sprite2.getExistingSprites()) {
-//					if (sprite instanceof BadAutoOperatedSprite) {
-//						if (hit(sprite)) {
-//							sprite.removeSprite();
-//							this.removeSprite();
-//							break;
-//						}
-//					}
-//				}
-//			}
-//		}
-//
-//		@Override
-//		public void removeSprite() {
-//			super.removeSprite();
-//			attacks.remove(this);
-//			player.getParent().remove(this);
-//		}
-//
-//		public long getCreateTime() {
-//			return createTime;
-//		}
-//	}
 }
