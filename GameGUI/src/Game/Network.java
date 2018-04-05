@@ -38,8 +38,8 @@ public interface Network {
 
 	/**
 	 * Receive data from the server.</br>
-	 * The data should look like this: "(newX1,newY1) : (newX2,newY2) :
-	 * (newX3,newY3) : (newX4,newY4)\n" </br>
+	 * The data should look like this:</br>
+	 * "(newX1,newY1) : (newX2,newY2) : (newX3,newY3) : (newX4,newY4)\n" </br>
 	 * </br>
 	 * These numbers represent the locations of the 4 players at the given time
 	 * 
