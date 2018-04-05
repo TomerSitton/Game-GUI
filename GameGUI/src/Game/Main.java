@@ -57,6 +57,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void run() {
 		while (true) {
 			cycle();
+			player.sendData("(" + player.getX() + "," + player.getY() + ")\n");
 			try {
 				Thread.sleep(30);
 			} catch (InterruptedException e1) {
