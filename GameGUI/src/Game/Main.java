@@ -3,6 +3,7 @@ package Game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		initComponents();
 		Thread t = new Thread(this);
 		t.start();
-
+		
 		frame.setVisible(true);
 	}
 
@@ -58,6 +59,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		while (true) {
 			cycle();
 			player.sendData("(" + player.getX() + "," + player.getY() + ")\n");
+			System.out.println("data recieved from server: "+player.recieveData());
 			try {
 				Thread.sleep(30);
 			} catch (InterruptedException e1) {
@@ -107,5 +109,4 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyTyped(KeyEvent e) {
 
 	}
-
 }
