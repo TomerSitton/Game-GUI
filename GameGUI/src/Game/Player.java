@@ -41,6 +41,7 @@ public class Player extends Sprite2 {
 			inputStreamFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			outputStreamToServer = new DataOutputStream(socket.getOutputStream());
 			index = Integer.parseInt(inputStreamFromServer.readLine());
+			System.out.println("the player's index is" + index);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,13 +57,12 @@ public class Player extends Sprite2 {
 
 	/**
 	 * send data to the server. </br>
-	 * In the game, the data sent to the the server is represented like this:
-	 * </br>
+	 * In the game, the data sent to the the server is represented like this: </br>
 	 * </br>
 	 * "(newX,newY)\n" </br>
 	 * </br>
-	 * so if for example my character moved from (0,0) to (10,12), the data to
-	 * be sent to the server will look like this:</br>
+	 * so if for example my character moved from (0,0) to (10,12), the data to be
+	 * sent to the server will look like this:</br>
 	 * "(10,12)\n"
 	 * 
 	 * @param data
