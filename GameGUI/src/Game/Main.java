@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.ObjectStreamException;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
@@ -46,11 +47,14 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 		players = new Player[Integer.parseInt(myPlayer.recieveData())];
 		for (int i = 0; i < players.length; i++) {
-			if (i + 1 == myPlayer.getIndex())
-				players[i] = myPlayer;
-			else
-				// TODO - change to real starting positions
-				players[i] = new Player(i * 100, i * 100, false);
+			try {
+				if (i + 1 == myPlayer.getIndex())
+					players[i] = myPlayer;
+				else
+					players[i] = new Player(i * 100, i * 100, false);
+			} catch (ObjectStreamException e) {
+				e.printStackTrace();
+			}
 		}
 
 		surfaces[0] = new Surface(WorldConstants.GROUND.X, WorldConstants.GROUND.Y, WorldConstants.GROUND.WIDTH,
