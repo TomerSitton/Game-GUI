@@ -110,8 +110,6 @@ public abstract class MoveableCharacter extends JComponent {
 
 	public void moveOneStep() {
 
-		System.out.println(currentDirections.directionY);
-
 		switch (currentDirections.directionX) {
 		case MOVE_RIGHT:
 			x = x + speedX;
@@ -189,7 +187,6 @@ public abstract class MoveableCharacter extends JComponent {
 				}
 			}
 		}
-		System.out.println("falling");
 		// not jumping or standing on a surface
 		currentDirections.directionY = DirectionY.DOWN;
 	}

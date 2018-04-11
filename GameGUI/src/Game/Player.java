@@ -5,14 +5,18 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectStreamException;
 import java.net.Socket;
 
+//TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
 
 	// client's socket and I/O streams
 	private Socket socket;
 	private BufferedReader inputStreamFromServer;
 	private DataOutputStream outputStreamToServer;
+
+	private int index = -1;
 
 	public static final String URL = "img/sprite-boy-running.png";
 	public static final int ROWS = 2;
@@ -22,9 +26,10 @@ public class Player extends Sprite2 {
 	public static final int SPEED_X = 15;
 	public static final int SPEED_Y = 10;
 
-	public Player(int x, int y) {
+	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
-		initSocketStreams();
+		if (isMyPlayer)
+			initSocketStreams();
 	}
 
 	/**
@@ -35,9 +40,18 @@ public class Player extends Sprite2 {
 			socket = new Socket(Network.SERVER_IP, Network.SERVER_PORT);
 			inputStreamFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			outputStreamToServer = new DataOutputStream(socket.getOutputStream());
+			index = Integer.parseInt(inputStreamFromServer.readLine());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public int getIndex() throws ObjectStreamException {
+		if (index == -1) {
+			throw new ObjectStreamException("the 'index' variable of that player has not yet been initialized") {
+			};
+		}
+		return index;
 	}
 
 	/**
