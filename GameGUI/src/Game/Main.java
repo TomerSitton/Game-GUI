@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import Game.DirectionsTuple.DirectionX;
 
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
+// TODO - make a client class that handles commu with server (like the index and number of players etc.)
 public class Main extends JPanel implements Runnable, KeyListener {
 	private Player[] players;
 	private Player myPlayer;
@@ -51,7 +52,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 				if (i + 1 == myPlayer.getIndex())
 					players[i] = myPlayer;
 				else
-					players[i] = new Player(i * 100, i * 100, false);
+					players[i] = new Player(i * 100, 200, false);
 			} catch (ObjectStreamException e) {
 				e.printStackTrace();
 			}
