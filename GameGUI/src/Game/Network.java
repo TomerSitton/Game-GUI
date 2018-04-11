@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public interface Network {
 	// server's address constants
-	public static final String SERVER_IP = "127.0.0.1";
+	public static final String SERVER_IP = "10.0.0.3";
 	public static final int SERVER_PORT = 2212;
 
 	/**
