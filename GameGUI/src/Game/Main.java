@@ -13,8 +13,10 @@ import javax.swing.JPanel;
 
 import Game.DirectionsTuple.DirectionX;
 
+//TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 public class Main extends JPanel implements Runnable, KeyListener {
-	private Player player;
+	private Player[] players;
+	private Player myPlayer;
 	private JFrame frame;
 	private Surface[] surfaces = new Surface[1];
 
@@ -24,7 +26,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		initComponents();
 		Thread t = new Thread(this);
 		t.start();
-		
+
 		frame.setVisible(true);
 	}
 
@@ -39,8 +41,17 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	private void initComponents() {
-		player = new Player(100, 200);
-		this.add(player);
+		myPlayer = new Player(100, 200, true);
+		this.add(myPlayer);
+
+		players = new Player[Integer.parseInt(myPlayer.recieveData())];
+		for (int i = 0; i < players.length; i++) {
+			if (i + 1 == myPlayer.getIndex())
+				players[i] = myPlayer;
+			else
+				// TODO - change to real starting positions
+				players[i] = new Player(i * 100, i * 100, false);
+		}
 
 		surfaces[0] = new Surface(WorldConstants.GROUND.X, WorldConstants.GROUND.Y, WorldConstants.GROUND.WIDTH,
 				WorldConstants.GROUND.HEIGHT);
@@ -58,8 +69,8 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void run() {
 		while (true) {
 			cycle();
-			player.sendData("(" + player.getX() + "," + player.getY() + ")\n");
-			System.out.println("data recieved from server: "+player.recieveData());
+			myPlayer.sendData("(" + myPlayer.getX() + "," + myPlayer.getY() + ")\n");
+			updatePlayersLocations();
 			try {
 				Thread.sleep(30);
 			} catch (InterruptedException e1) {
@@ -81,13 +92,13 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_RIGHT:
-			player.setDirectionX(DirectionX.MOVE_RIGHT);
+			myPlayer.setDirectionX(DirectionX.MOVE_RIGHT);
 			break;
 		case KeyEvent.VK_LEFT:
-			player.setDirectionX(DirectionX.MOVE_LEFT);
+			myPlayer.setDirectionX(DirectionX.MOVE_LEFT);
 			break;
 		case KeyEvent.VK_SPACE:
-			player.TryToJump();
+			myPlayer.TryToJump();
 			break;
 		}
 
@@ -97,10 +108,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
-			player.setDirectionX(DirectionX.LOOK_LEFT);
+			myPlayer.setDirectionX(DirectionX.LOOK_LEFT);
 			break;
 		case KeyEvent.VK_RIGHT:
-			player.setDirectionX(DirectionX.LOOK_RIGHT);
+			myPlayer.setDirectionX(DirectionX.LOOK_RIGHT);
 			break;
 		}
 	}
@@ -109,4 +120,40 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyTyped(KeyEvent e) {
 
 	}
+
+	public void updatePlayersLocations() {
+		Point[] locations = getPlayersLocations();
+		for (int i = 0; i < players.length; i++) {
+			players[i].moveToLocation((int) locations[i].getX(), (int) locations[i].getY());
+		}
+	}
+
+	/**
+	 * 
+	 * @return - an array of points which represents the locations of the
+	 *         players received from the server
+	 */
+	private Point[] getPlayersLocations() {
+		// Receive data from server
+		String data = myPlayer.recieveData();
+		// the location string for each player would look like this:['x','y']
+		String location;
+		// the locations of the players
+		Point[] playersLocations = new Point[players.length];
+
+		for (int i = 0; i < players.length; i++) {
+			/** handle strings **/
+			location = data.substring(data.indexOf('['), data.indexOf(']') + 1).replaceAll("\\s", "").replace("'", "");
+			System.out.println("location for " + i + " - " + location);
+			// cutting the last location from the string
+			data = data.substring(data.indexOf(']') + 1);
+
+			/** handle points **/
+			int x = Integer.parseInt(location.substring(location.indexOf('[') + 1, location.indexOf(',')));
+			int y = Integer.parseInt(location.substring(location.indexOf(',') + 1, location.indexOf(']')));
+			playersLocations[i] = new Point(x, y);
+		}
+		return playersLocations;
+	}
+
 }
