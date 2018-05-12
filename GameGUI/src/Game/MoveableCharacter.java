@@ -131,8 +131,6 @@ public abstract class MoveableCharacter extends JComponent {
 		default:
 			break;
 		}
-
-		repaint();
 	}
 
 	public void moveToLocation(int newX, int newY) {
