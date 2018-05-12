@@ -53,7 +53,7 @@ public abstract class MoveableCharacter extends JComponent {
 	 * set the location of the {@link MoveableCharacter} on the x axis
 	 * 
 	 * @param x
-	 *            - the wanted location to the {@link MoveableCharacter} to be
+	 *            - the wanted location for the {@link MoveableCharacter} to be
 	 *            positioned at
 	 */
 	public void setX(int x) {
@@ -64,7 +64,7 @@ public abstract class MoveableCharacter extends JComponent {
 	 * set the location of the {@link MoveableCharacter} on the y axis
 	 * 
 	 * @param y
-	 *            - the wanted location to the {@link MoveableCharacter} to be
+	 *            - the wanted location for the {@link MoveableCharacter} to be
 	 *            positioned at
 	 */
 	public void setY(int y) {
@@ -179,6 +179,15 @@ public abstract class MoveableCharacter extends JComponent {
 
 	/////////////////// other methods /////////////////
 
+	/**
+	 * this method adds or subtracts the speed of the {@link MoveableCharacter} from
+	 * its location on each axis according to its current movement-direction on each
+	 * axis.
+	 * 
+	 * if the direction does not require movement - this method will do nothing and
+	 * the location value on that axis will stay the same
+	 * 
+	 */
 	public void moveOneStep() {
 
 		switch (currentDirections.directionX) {
@@ -204,6 +213,16 @@ public abstract class MoveableCharacter extends JComponent {
 		}
 	}
 
+	/**
+	 * this method moves the {@link MoveableCharacter} to the target x,y position
+	 * and updates its {@link DirectionsTuple} accordingly
+	 * 
+	 * @param newX
+	 *            - the desired x location to the {@link MoveableCharacter} to be at
+	 * @param newY
+	 *            - the desired y location to the {@link MoveableCharacter} to be at
+	 * @see DirectionsTuple
+	 */
 	public void moveToLocation(int newX, int newY) {
 		// handle x directions
 		if (newX > x)
@@ -216,6 +235,10 @@ public abstract class MoveableCharacter extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * this method changes the Y direction of the {@link MoveableCharacter} to be UP
+	 * (thus making it move up) for a short time, and then stops
+	 */
 	public void TryToJump() {
 		if (isJumping) {
 			System.out.println("can't jump. the character is already in the middle of a jump");
@@ -240,6 +263,15 @@ public abstract class MoveableCharacter extends JComponent {
 		System.out.println("end try jump");
 	}
 
+	/**
+	 * this method makes the character move downwards if it is not standing on a
+	 * {@link Surface} or if it is not in the middle of a jump
+	 * 
+	 * @param surfaces
+	 *            - the surfaces in the JFrame.
+	 * 
+	 * @see Surface
+	 */
 	public void fall(Surface[] surfaces) {
 		// the character is in a middle of a jump.
 		if (isJumping)
@@ -256,7 +288,7 @@ public abstract class MoveableCharacter extends JComponent {
 				}
 			}
 		}
-		// not jumping or standing on a surface
+		// not jumping and not standing on a surface
 		currentDirections.directionY = DirectionY.DOWN;
 	}
 
