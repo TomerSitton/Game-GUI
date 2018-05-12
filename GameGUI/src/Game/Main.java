@@ -87,6 +87,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
+			cycle();
 			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
 			updatePlayersLocations();
 			try {
