@@ -47,7 +47,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * creates the components of the JFrame and adds them to the frame. The
-	 * components includes players, surfaces etc.
+	 * components include players, surfaces etc.
 	 */
 	private void initComponents() {
 		// initialize my player
