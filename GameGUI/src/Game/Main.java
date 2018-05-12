@@ -32,6 +32,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * handles the initialization of the JFrame: size, color, keyListener etc.
+	 */
 	private void initFrame() {
 		this.setBounds(10, 10, 1000, 700);
 		frame = new JFrame();
@@ -42,10 +45,16 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		setBackground(Color.gray);
 	}
 
+	/**
+	 * creates the components of the JFrame and adds them to the frame. The
+	 * components includes players, surfaces etc.
+	 */
 	private void initComponents() {
+		// initialize my player
 		myPlayer = new Player(100, 200, true);
 		this.add(myPlayer);
 
+		// initialize other players
 		players = new Player[Integer.parseInt(myPlayer.recieveData())];
 		for (int i = 0; i < players.length; i++) {
 			try {
@@ -58,11 +67,15 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			}
 		}
 
+		// initialize the surfaces
 		surfaces[0] = new Surface(WorldConstants.GROUND.X, WorldConstants.GROUND.Y, WorldConstants.GROUND.WIDTH,
 				WorldConstants.GROUND.HEIGHT);
 		this.add(surfaces[0]);
 	}
 
+	/**
+	 * calls the painting methods of all of the JFrame's components
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -70,10 +83,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		Arrays.asList(surfaces).forEach(surface -> surface.paint(g));
 	}
 
+
 	@Override
 	public void run() {
 		while (true) {
-			cycle();
 			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
 			updatePlayersLocations();
 			try {
@@ -135,8 +148,8 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * 
-	 * @return - an array of points which represents the locations of the
-	 *         players received from the server
+	 * @return - an array of points which represents the locations of the players
+	 *         received from the server
 	 */
 	private Point[] getPlayersLocations() {
 		// Receive data from server
