@@ -91,18 +91,23 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * this is the thread's function handling the cycles of the game. In each
-	 * run the function changes the characters positions and updates them on the
-	 * JFrame accordingly, and send the position of the player to the server
+	 * run the function updates calculates the X and Y values of the player,
+	 * sends it to the server, and then receives the positions of the rest of
+	 * the players and updates them on the frame
 	 */
 	@Override
 	public void run() {
 		while (true) {
-			myPlayer.moveToLocation(myPlayer.getX() + dx, myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces));
-			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
+			// calculate the new positions
+			int newX = myPlayer.getX() + dx;
+			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
+			// send positions to the server
+			myPlayer.sendData("[" + newX + "," + newY + "]\n");
+			// receive positions of all the players and update the frame
 			updatePlayersLocations();
 			repaint();
 			try {
-				Thread.sleep(30);
+				Thread.sleep(15);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
