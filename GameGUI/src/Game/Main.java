@@ -26,6 +26,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			put("LEFT", false);
 		}
 	};
+	private int dx;
 
 	public Main() {
 
@@ -96,14 +97,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
-			// TODO - move the repaint to the end of the while loop and remove
-			// the call to repaint in the moveOneStep method
-			Sprite2.getExistingSprites().forEach((s) -> s.fall(surfaces));
-			Sprite2.getExistingSprites()
-					.forEach((s) -> s.moveToLocation(s.getX() + s.getSpeedX(), s.getY() + s.getSpeedY()));
-			repaint();
+			myPlayer.moveToLocation(myPlayer.getX() + dx, myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces));
 			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
 			updatePlayersLocations();
+			repaint();
 			try {
 				Thread.sleep(30);
 			} catch (InterruptedException e1) {
@@ -125,10 +122,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_RIGHT:
 			keys.put("RIGHT", true);
-			myPlayer.setSpeedX(Player.SPEED_X);
+			dx = myPlayer.getSpeedX();
 			break;
 		case KeyEvent.VK_LEFT:
-			myPlayer.setSpeedX(-Player.SPEED_X);
+			dx = -myPlayer.getSpeedX();
 			keys.put("LEFT", true);
 			break;
 		case KeyEvent.VK_SPACE:
@@ -141,20 +138,18 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	/**
 	 * change the direction back when the released
 	 */
-	// TODO - make it work with the new version of keyPressed
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("released");
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_RIGHT:
 			if (keys.get("LEFT") == false)
-				myPlayer.setSpeedX(0);
+				dx = 0;
 			keys.put("RIGHT", false);
 			break;
 		case KeyEvent.VK_LEFT:
 			if (keys.get("RIGHT") == false)
-				myPlayer.setSpeedX(0);
-			keys.put("RIGHT", false);
+				dx = 0;
+			keys.put("LEFT", false);
 			break;
 		}
 	}

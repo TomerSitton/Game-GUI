@@ -15,7 +15,7 @@ public abstract class MoveableCharacter extends JComponent {
 	private int speedX, speedY;
 
 	// the directionTuple (x,y) of the instance
-//	protected DirectionEnum currentDirections = new DirectionEnum();
+	// protected DirectionEnum currentDirections = new DirectionEnum();
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
@@ -68,16 +68,16 @@ public abstract class MoveableCharacter extends JComponent {
 		this.y = y;
 	}
 
-//	/**
-//	 * set the direction of the {@link MoveableCharacter} on the x axis
-//	 * 
-//	 * @param directionX
-//	 *            - the new direction of the {@link MoveableCharacter}.
-//	 * @see DirectionEnum.DirectionX
-//	 */
-//	public void setDirectionX(DirectionX directionX) {
-//		this.currentDirections.directionX = directionX;
-//	}
+	// /**
+	// * set the direction of the {@link MoveableCharacter} on the x axis
+	// *
+	// * @param directionX
+	// * - the new direction of the {@link MoveableCharacter}.
+	// * @see DirectionEnum.DirectionX
+	// */
+	// public void setDirectionX(DirectionX directionX) {
+	// this.currentDirections.directionX = directionX;
+	// }
 
 	/**
 	 * sets the absolute speed of the Sprite on the X axis
@@ -115,13 +115,13 @@ public abstract class MoveableCharacter extends JComponent {
 		return y;
 	}
 
-//	/**
-//	 * @return the direction of the {@link MoveableCharacter} on the x axis
-//	 * @see DirectionEnum.DirectionX
-//	 */
-//	public DirectionX getDirectionX() {
-//		return currentDirections.directionX;
-//	}
+	// /**
+	// * @return the direction of the {@link MoveableCharacter} on the x axis
+	// * @see DirectionEnum.DirectionX
+	// */
+	// public DirectionX getDirectionX() {
+	// return currentDirections.directionX;
+	// }
 
 	/**
 	 * returns the absolute speed of the Sprite on the X axis
@@ -172,7 +172,6 @@ public abstract class MoveableCharacter extends JComponent {
 	public void moveToLocation(int newX, int newY) {
 		this.x = newX;
 		this.y = newY;
-		repaint();
 	}
 
 	/**
@@ -190,7 +189,7 @@ public abstract class MoveableCharacter extends JComponent {
 			public void run() {
 				isJumping = true;
 				// currentDirections.directionY = DirectionY.UP;
-				speedY = WorldConstants.PHYSICS.JUMPING_SPEED;
+				// speedY = WorldConstants.PHYSICS.JUMPING_SPEED;
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -213,10 +212,10 @@ public abstract class MoveableCharacter extends JComponent {
 	 * 
 	 * @see Surface
 	 */
-	public void fall(Surface[] surfaces) {
+	public int getCurrentYSpeed(Surface[] surfaces) {
 		// the character is in a middle of a jump.
 		if (isJumping)
-			return;
+			return -speedY;
 		for (Surface surface : surfaces) {
 
 			// the character and the surface are on the same y axis scale.
@@ -225,14 +224,13 @@ public abstract class MoveableCharacter extends JComponent {
 				if (this.x + this.WIDTH >= surface.getX() && this.x <= surface.getX() + surface.getWidth()) {
 					// the character is standing
 					onTheGround = true;
-					speedY = 0;
-					return;
+					return 0;
 				}
 			}
 		}
 		// not jumping and not standing on a surface
 		onTheGround = false;
-		speedY = WorldConstants.PHYSICS.FALLING_SPEED;
+		return WorldConstants.PHYSICS.FALLING_SPEED;
 	}
 
 	public abstract void draw(Graphics g);
