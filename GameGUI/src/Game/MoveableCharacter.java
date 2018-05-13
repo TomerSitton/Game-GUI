@@ -9,7 +9,7 @@ import Game.DirectionsTuple.DirectionX;
 public abstract class MoveableCharacter extends JComponent {
 	private int x, y;
 	public final int WIDTH, HEIGHT;
-	private boolean isJumping;
+	private boolean isJumping, onTheGround;
 	/*
 	 * the current speeds of the character. this is not final because maybe the
 	 * speeds of the characters will change during the game.
@@ -188,7 +188,7 @@ public abstract class MoveableCharacter extends JComponent {
 	 * be UP (thus making it move up) for a short time, and then stops
 	 */
 	public void TryToJump() {
-		if (isJumping) {
+		if (isJumping || !onTheGround) {
 			System.out.println("can't jump. the character is already in the middle of a jump");
 			return;
 		}
@@ -232,14 +232,14 @@ public abstract class MoveableCharacter extends JComponent {
 				// the character is above the surface on the x axis.
 				if (this.x + this.WIDTH >= surface.getX() && this.x <= surface.getX() + surface.getWidth()) {
 					// the character is standing
-					// currentDirections.directionY = DirectionY.STILL;
+					onTheGround = true;
 					speedY = 0;
 					return;
 				}
 			}
 		}
 		// not jumping and not standing on a surface
-		// currentDirections.directionY = DirectionY.DOWN;
+		onTheGround = false;
 		speedY = WorldConstants.PHYSICS.FALLING_SPEED;
 	}
 
