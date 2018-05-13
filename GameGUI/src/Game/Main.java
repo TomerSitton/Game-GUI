@@ -13,7 +13,7 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Game.DirectionsTuple.DirectionX;
+import Game.DirectionEnum.DirectionX;
 
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 // TODO - make a client class that handles commu with server (like the index and number of players etc.)

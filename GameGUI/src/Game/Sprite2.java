@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import Game.DirectionsTuple.DirectionX;
+import Game.DirectionEnum.DirectionX;
 
 public abstract class Sprite2 extends MoveableCharacter /* implements Cyclic */ {
 	/**

@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-import Game.DirectionsTuple.DirectionX;
+import Game.DirectionEnum.DirectionX;
 
 public abstract class MoveableCharacter extends JComponent {
 	private int x, y;
@@ -17,7 +17,7 @@ public abstract class MoveableCharacter extends JComponent {
 	private int speedX, speedY;
 
 	// the directionTuple (x,y) of the instance
-	protected DirectionsTuple currentDirections = new DirectionsTuple();
+	protected DirectionEnum currentDirections = new DirectionEnum();
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
@@ -75,7 +75,7 @@ public abstract class MoveableCharacter extends JComponent {
 	 * 
 	 * @param directionX
 	 *            - the new direction of the {@link MoveableCharacter}.
-	 * @see DirectionsTuple.DirectionX
+	 * @see DirectionEnum.DirectionX
 	 */
 	public void setDirectionX(DirectionX directionX) {
 		this.currentDirections.directionX = directionX;
@@ -119,7 +119,7 @@ public abstract class MoveableCharacter extends JComponent {
 
 	/**
 	 * @return the direction of the {@link MoveableCharacter} on the x axis
-	 * @see DirectionsTuple.DirectionX
+	 * @see DirectionEnum.DirectionX
 	 */
 	public DirectionX getDirectionX() {
 		return currentDirections.directionX;
@@ -161,7 +161,7 @@ public abstract class MoveableCharacter extends JComponent {
 
 	/**
 	 * this method moves the {@link MoveableCharacter} to the target x,y
-	 * position and updates its {@link DirectionsTuple} accordingly
+	 * position and updates its {@link DirectionEnum} accordingly
 	 * 
 	 * @param newX
 	 *            - the desired x location to the {@link MoveableCharacter} to
@@ -169,7 +169,7 @@ public abstract class MoveableCharacter extends JComponent {
 	 * @param newY
 	 *            - the desired y location to the {@link MoveableCharacter} to
 	 *            be at
-	 * @see DirectionsTuple
+	 * @see DirectionEnum
 	 */
 	public void moveToLocation(int newX, int newY) {
 		// handle x directions
