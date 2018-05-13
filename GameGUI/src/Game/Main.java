@@ -32,6 +32,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * handles the initialization of the JFrame: size, color, keyListener etc.
+	 */
 	private void initFrame() {
 		this.setBounds(10, 10, 1000, 700);
 		frame = new JFrame();
@@ -42,10 +45,16 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		setBackground(Color.gray);
 	}
 
+	/**
+	 * creates the components of the JFrame and adds them to the frame. The
+	 * components include players, surfaces etc.
+	 */
 	private void initComponents() {
+		// initialize my player
 		myPlayer = new Player(100, 200, true);
 		this.add(myPlayer);
 
+		// initialize other players
 		players = new Player[Integer.parseInt(myPlayer.recieveData())];
 		for (int i = 0; i < players.length; i++) {
 			try {
@@ -58,11 +67,15 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			}
 		}
 
+		// initialize the surfaces
 		surfaces[0] = new Surface(WorldConstants.GROUND.X, WorldConstants.GROUND.Y, WorldConstants.GROUND.WIDTH,
 				WorldConstants.GROUND.HEIGHT);
 		this.add(surfaces[0]);
 	}
 
+	/**
+	 * calls the painting methods of all of the JFrame's components
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -70,10 +83,18 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		Arrays.asList(surfaces).forEach(surface -> surface.paint(g));
 	}
 
+	/**
+	 * this is the thread's function handling the cycles of the game. In each
+	 * run the function changes the characters positions and updates them on the
+	 * JFrame accordingly, and send the position of the player to the server
+	 */
 	@Override
 	public void run() {
 		while (true) {
-			cycle();
+			// TODO - move the repaint to the end of the while loop and remove
+			// the call to repaint in the moveOneStep method
+			Sprite2.getExistingSprites().forEach((s) -> s.oneCycle(surfaces));
+			repaint();
 			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
 			updatePlayersLocations();
 			try {
@@ -81,18 +102,17 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
+
 		}
 	}
 
-	public void cycle() {
-		Sprite2.getExistingSprites().forEach((s) -> s.oneCycle(surfaces));
-		repaint();
-	}
-
-	public static void main(String[] args) {
-		new Main();
-	}
-
+	/**
+	 * this method handles the keyboard requests. it changes the direction of
+	 * the character accordingly
+	 */
+	// TODO - why is it just changing the direction? why not changing the
+	// direction to look to the right one and ALSO call the movement method (i.e
+	// changing the x and y values)
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -109,6 +129,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	}
 
+	/**
+	 * change the direction back when the released
+	 */
+	// TODO - make it work with the new version of keyPressed
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -124,13 +148,6 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 
-	}
-
-	public void updatePlayersLocations() {
-		Point[] locations = getPlayersLocations();
-		for (int i = 0; i < players.length; i++) {
-			players[i].moveToLocation((int) locations[i].getX(), (int) locations[i].getY());
-		}
 	}
 
 	/**
@@ -159,6 +176,20 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			playersLocations[i] = new Point(x, y);
 		}
 		return playersLocations;
+	}
+
+	/**
+	 * changes the players positions to those received by the server
+	 */
+	public void updatePlayersLocations() {
+		Point[] locations = getPlayersLocations();
+		for (int i = 0; i < players.length; i++) {
+			players[i].moveToLocation((int) locations[i].getX(), (int) locations[i].getY());
+		}
+	}
+
+	public static void main(String[] args) {
+		new Main();
 	}
 
 }

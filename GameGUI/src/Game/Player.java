@@ -47,6 +47,11 @@ public class Player extends Sprite2 {
 		}
 	}
 
+	/**
+	 * 
+	 * @return the index of the player in the game
+	 * @throws ObjectStreamException
+	 */
 	public int getIndex() throws ObjectStreamException {
 		if (index == -1) {
 			throw new ObjectStreamException("the 'index' variable of that player has not yet been initialized") {
@@ -83,15 +88,5 @@ public class Player extends Sprite2 {
 	 */
 	public String recieveData() {
 		return Network.recieveDataFromServer(this.inputStreamFromServer);
-	}
-
-	@Override
-	public void oneCycle(Surface[] surfaces) {
-		super.oneCycle(surfaces);
-	}
-
-	@Override
-	public void draw(Graphics g) {
-		super.draw(g);
 	}
 }
