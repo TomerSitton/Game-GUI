@@ -23,8 +23,8 @@ public class Player extends Sprite2 {
 	public static final int COLUMNS = 8;
 	public static final int WIDTH = 110;
 	public static final int HEIGHT = 150;
-	public static final int SPEED_X = 15;
-	public static final int SPEED_Y = 10;
+	public static final int SPEED_X = 25;
+	public static final int SPEED_Y = 20;
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
