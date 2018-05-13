@@ -4,8 +4,6 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-import Game.DirectionEnum.DirectionX;
-
 public abstract class MoveableCharacter extends JComponent {
 	private int x, y;
 	public final int WIDTH, HEIGHT;
@@ -17,7 +15,7 @@ public abstract class MoveableCharacter extends JComponent {
 	private int speedX, speedY;
 
 	// the directionTuple (x,y) of the instance
-	protected DirectionEnum currentDirections = new DirectionEnum();
+//	protected DirectionEnum currentDirections = new DirectionEnum();
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
@@ -70,16 +68,16 @@ public abstract class MoveableCharacter extends JComponent {
 		this.y = y;
 	}
 
-	/**
-	 * set the direction of the {@link MoveableCharacter} on the x axis
-	 * 
-	 * @param directionX
-	 *            - the new direction of the {@link MoveableCharacter}.
-	 * @see DirectionEnum.DirectionX
-	 */
-	public void setDirectionX(DirectionX directionX) {
-		this.currentDirections.directionX = directionX;
-	}
+//	/**
+//	 * set the direction of the {@link MoveableCharacter} on the x axis
+//	 * 
+//	 * @param directionX
+//	 *            - the new direction of the {@link MoveableCharacter}.
+//	 * @see DirectionEnum.DirectionX
+//	 */
+//	public void setDirectionX(DirectionX directionX) {
+//		this.currentDirections.directionX = directionX;
+//	}
 
 	/**
 	 * sets the absolute speed of the Sprite on the X axis
@@ -117,13 +115,13 @@ public abstract class MoveableCharacter extends JComponent {
 		return y;
 	}
 
-	/**
-	 * @return the direction of the {@link MoveableCharacter} on the x axis
-	 * @see DirectionEnum.DirectionX
-	 */
-	public DirectionX getDirectionX() {
-		return currentDirections.directionX;
-	}
+//	/**
+//	 * @return the direction of the {@link MoveableCharacter} on the x axis
+//	 * @see DirectionEnum.DirectionX
+//	 */
+//	public DirectionX getDirectionX() {
+//		return currentDirections.directionX;
+//	}
 
 	/**
 	 * returns the absolute speed of the Sprite on the X axis
@@ -172,12 +170,6 @@ public abstract class MoveableCharacter extends JComponent {
 	 * @see DirectionEnum
 	 */
 	public void moveToLocation(int newX, int newY) {
-		// handle x directions
-		if (newX > x)
-			currentDirections.directionX = DirectionX.LOOK_RIGHT;
-		else if (newX < x)
-			currentDirections.directionX = DirectionX.LOOK_LEFT;
-
 		this.x = newX;
 		this.y = newY;
 		repaint();

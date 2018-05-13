@@ -13,8 +13,6 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Game.DirectionEnum.DirectionX;
-
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 // TODO - make a client class that handles commu with server (like the index and number of players etc.)
 public class Main extends JPanel implements Runnable, KeyListener {
@@ -126,12 +124,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_RIGHT:
-			myPlayer.setDirectionX(DirectionX.LOOK_RIGHT);
 			keys.put("RIGHT", true);
 			myPlayer.setSpeedX(Player.SPEED_X);
 			break;
 		case KeyEvent.VK_LEFT:
-			myPlayer.setDirectionX(DirectionX.LOOK_LEFT);
 			myPlayer.setSpeedX(-Player.SPEED_X);
 			keys.put("LEFT", true);
 			break;

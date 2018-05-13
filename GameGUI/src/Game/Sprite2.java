@@ -7,9 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import Game.DirectionEnum.DirectionX;
-
-public abstract class Sprite2 extends MoveableCharacter /* implements Cyclic */ {
+public abstract class Sprite2 extends MoveableCharacter {
 	/**
 	 * a double dimensional array representing the different states of the
 	 * sprite
@@ -110,15 +108,13 @@ public abstract class Sprite2 extends MoveableCharacter /* implements Cyclic */ 
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
-		super.moveToLocation(newX, newY);
-		if (currentDirections.directionX == DirectionX.LOOK_RIGHT) {
+		if (newX > getX()) {
 			currentRow = 0;
-			currentColumn = getNextColumn();
-		} else {
+		} else if (newX < getX()) {
 			currentRow = 1;
-			currentColumn = getNextColumn();
-
 		}
+		currentColumn = getNextColumn();
+		super.moveToLocation(newX, newY);
 	}
 
 	/**
