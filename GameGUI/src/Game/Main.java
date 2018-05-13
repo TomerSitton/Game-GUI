@@ -8,11 +8,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.ObjectStreamException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import Game.DirectionsTuple.DirectionX;
 
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 // TODO - make a client class that handles commu with server (like the index and number of players etc.)
@@ -21,6 +20,13 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	private Player myPlayer;
 	private JFrame frame;
 	private Surface[] surfaces = new Surface[1];
+	private HashMap<String, Boolean> keys = new HashMap<String, Boolean>() {
+		{
+			put("RIGHT", false);
+			put("LEFT", false);
+		}
+	};
+	private int dx;
 
 	public Main() {
 
@@ -85,20 +91,23 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * this is the thread's function handling the cycles of the game. In each
-	 * run the function changes the characters positions and updates them on the
-	 * JFrame accordingly, and send the position of the player to the server
+	 * run the function updates calculates the X and Y values of the player,
+	 * sends it to the server, and then receives the positions of the rest of
+	 * the players and updates them on the frame
 	 */
 	@Override
 	public void run() {
 		while (true) {
-			// TODO - move the repaint to the end of the while loop and remove
-			// the call to repaint in the moveOneStep method
-			Sprite2.getExistingSprites().forEach((s) -> s.oneCycle(surfaces));
-			repaint();
-			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
+			// calculate the new positions
+			int newX = myPlayer.getX() + dx;
+			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
+			// send positions to the server
+			myPlayer.sendData("[" + newX + "," + newY + "]\n");
+			// receive positions of all the players and update the frame
 			updatePlayersLocations();
+			repaint();
 			try {
-				Thread.sleep(30);
+				Thread.sleep(15);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -117,10 +126,12 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_RIGHT:
-			myPlayer.setDirectionX(DirectionX.MOVE_RIGHT);
+			keys.put("RIGHT", true);
+			dx = myPlayer.getSpeedX();
 			break;
 		case KeyEvent.VK_LEFT:
-			myPlayer.setDirectionX(DirectionX.MOVE_LEFT);
+			dx = -myPlayer.getSpeedX();
+			keys.put("LEFT", true);
 			break;
 		case KeyEvent.VK_SPACE:
 			myPlayer.TryToJump();
@@ -132,15 +143,18 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	/**
 	 * change the direction back when the released
 	 */
-	// TODO - make it work with the new version of keyPressed
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			myPlayer.setDirectionX(DirectionX.LOOK_LEFT);
-			break;
 		case KeyEvent.VK_RIGHT:
-			myPlayer.setDirectionX(DirectionX.LOOK_RIGHT);
+			if (keys.get("LEFT") == false)
+				dx = 0;
+			keys.put("RIGHT", false);
+			break;
+		case KeyEvent.VK_LEFT:
+			if (keys.get("RIGHT") == false)
+				dx = 0;
+			keys.put("LEFT", false);
 			break;
 		}
 	}
@@ -166,7 +180,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		for (int i = 0; i < players.length; i++) {
 			/** handle strings **/
 			location = data.substring(data.indexOf('['), data.indexOf(']') + 1).replaceAll("\\s", "").replace("'", "");
-			System.out.println("location for " + i + " - " + location);
+			// System.out.println("location for " + i + " - " + location);
 			// cutting the last location from the string
 			data = data.substring(data.indexOf(']') + 1);
 
