@@ -1,6 +1,6 @@
 package Game;
 
-public class DirectionsTuple {
+public class DirectionEnum {
 	enum DirectionX {
 		LOOK_RIGHT, LOOK_LEFT;
 	}
