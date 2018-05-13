@@ -83,11 +83,18 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		Arrays.asList(surfaces).forEach(surface -> surface.paint(g));
 	}
 
-
+	/**
+	 * this is the thread's function handling the cycles of the game. In each
+	 * run the function changes the characters positions and updates them on the
+	 * JFrame accordingly, and send the position of the player to the server
+	 */
 	@Override
 	public void run() {
 		while (true) {
-			cycle();
+			// TODO - move the repaint to the end of the while loop and remove
+			// the call to repaint in the moveOneStep method
+			Sprite2.getExistingSprites().forEach((s) -> s.oneCycle(surfaces));
+			repaint();
 			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
 			updatePlayersLocations();
 			try {
@@ -95,18 +102,17 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
+
 		}
 	}
 
-	public void cycle() {
-		Sprite2.getExistingSprites().forEach((s) -> s.oneCycle(surfaces));
-		repaint();
-	}
-
-	public static void main(String[] args) {
-		new Main();
-	}
-
+	/**
+	 * this method handles the keyboard requests. it changes the direction of
+	 * the character accordingly
+	 */
+	// TODO - why is it just changing the direction? why not changing the
+	// direction to look to the right one and ALSO call the movement method (i.e
+	// changing the x and y values)
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -123,6 +129,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	}
 
+	/**
+	 * change the direction back when the released
+	 */
+	// TODO - make it work with the new version of keyPressed
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -140,17 +150,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	}
 
-	public void updatePlayersLocations() {
-		Point[] locations = getPlayersLocations();
-		for (int i = 0; i < players.length; i++) {
-			players[i].moveToLocation((int) locations[i].getX(), (int) locations[i].getY());
-		}
-	}
-
 	/**
 	 * 
-	 * @return - an array of points which represents the locations of the players
-	 *         received from the server
+	 * @return - an array of points which represents the locations of the
+	 *         players received from the server
 	 */
 	private Point[] getPlayersLocations() {
 		// Receive data from server
@@ -173,6 +176,20 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			playersLocations[i] = new Point(x, y);
 		}
 		return playersLocations;
+	}
+
+	/**
+	 * changes the players positions to those received by the server
+	 */
+	public void updatePlayersLocations() {
+		Point[] locations = getPlayersLocations();
+		for (int i = 0; i < players.length; i++) {
+			players[i].moveToLocation((int) locations[i].getX(), (int) locations[i].getY());
+		}
+	}
+
+	public static void main(String[] args) {
+		new Main();
 	}
 
 }
