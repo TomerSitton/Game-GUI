@@ -21,7 +21,7 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 * the number of rows and columns in the original sprite image (i.e the
 	 * number of rows and columns in the {@link Sprite2#COSTUMES} variable
 	 */
-	protected final int ROWS, COLUMNS;
+	private final int ROWS, COLUMNS;
 	/**
 	 * the height and width of the costumes of the sprite
 	 */
@@ -30,11 +30,11 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 * the current row/column, representing the current costume, in the
 	 * {@link Sprite2#COSTUMES} variable
 	 */
-	protected int currentRow = 0, currentColumn = 0;
+	private int currentRow = 0, currentColumn = 0;
 	/**
 	 * and {@link ArrayList} representing the all the existing sprites
 	 */
-	private static ArrayList<Sprite2> existingSprites = new ArrayList<>();
+	private final static ArrayList<Sprite2> existingSprites = new ArrayList<>();
 
 	/////////////////// setters /////////////////
 	/**
