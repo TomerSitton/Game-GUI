@@ -8,14 +8,7 @@ public abstract class MoveableCharacter extends JComponent {
 	private int x, y;
 	public final int WIDTH, HEIGHT;
 	private boolean isJumping, onTheGround;
-	/*
-	 * the current speeds of the character. this is not final because maybe the
-	 * speeds of the characters will change during the game.
-	 */
 	private int speedX, speedY;
-
-	// the directionTuple (x,y) of the instance
-	// protected DirectionEnum currentDirections = new DirectionEnum();
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
@@ -68,17 +61,6 @@ public abstract class MoveableCharacter extends JComponent {
 		this.y = y;
 	}
 
-	// /**
-	// * set the direction of the {@link MoveableCharacter} on the x axis
-	// *
-	// * @param directionX
-	// * - the new direction of the {@link MoveableCharacter}.
-	// * @see DirectionEnum.DirectionX
-	// */
-	// public void setDirectionX(DirectionX directionX) {
-	// this.currentDirections.directionX = directionX;
-	// }
-
 	/**
 	 * sets the absolute speed of the Sprite on the X axis
 	 * 
@@ -114,14 +96,6 @@ public abstract class MoveableCharacter extends JComponent {
 	public int getY() {
 		return y;
 	}
-
-	// /**
-	// * @return the direction of the {@link MoveableCharacter} on the x axis
-	// * @see DirectionEnum.DirectionX
-	// */
-	// public DirectionX getDirectionX() {
-	// return currentDirections.directionX;
-	// }
 
 	/**
 	 * returns the absolute speed of the Sprite on the X axis
@@ -188,8 +162,6 @@ public abstract class MoveableCharacter extends JComponent {
 			@Override
 			public void run() {
 				isJumping = true;
-				// currentDirections.directionY = DirectionY.UP;
-				// speedY = WorldConstants.PHYSICS.JUMPING_SPEED;
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {

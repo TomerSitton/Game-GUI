@@ -180,7 +180,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		for (int i = 0; i < players.length; i++) {
 			/** handle strings **/
 			location = data.substring(data.indexOf('['), data.indexOf(']') + 1).replaceAll("\\s", "").replace("'", "");
-			// System.out.println("location for " + i + " - " + location);
+			 System.out.println("location for " + i + " - " + location);
 			// cutting the last location from the string
 			data = data.substring(data.indexOf(']') + 1);
 
