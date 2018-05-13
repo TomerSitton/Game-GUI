@@ -148,4 +148,14 @@ public abstract class Sprite2 extends MoveableCharacter {
 	public static ArrayList<Sprite2> getExistingSprites() {
 		return existingSprites;
 	}
+
+	public ArrayList<Sprite2> spritesTouching() {
+		ArrayList<Sprite2> touching = new ArrayList<>();
+		for (Sprite2 sprite : existingSprites) {
+			if (this.isTouching(sprite) && sprite != this) {
+				touching.add(sprite);
+			}
+		}
+		return touching;
+	}
 }
