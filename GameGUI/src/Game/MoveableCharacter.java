@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 import Game.DirectionsTuple.DirectionX;
-import Game.DirectionsTuple.DirectionY;
 
 public abstract class MoveableCharacter extends JComponent {
 	private int x, y;
@@ -24,11 +23,11 @@ public abstract class MoveableCharacter extends JComponent {
 	 * constructs a new {@link MoveableCharacter} with the given arguments
 	 * 
 	 * @param x
-	 *            - the starting location of the {@link MoveableCharacter} on the x
-	 *            axis
+	 *            - the starting location of the {@link MoveableCharacter} on
+	 *            the x axis
 	 * @param y
-	 *            - the starting location of the {@link MoveableCharacter} on the y
-	 *            axis
+	 *            - the starting location of the {@link MoveableCharacter} on
+	 *            the y axis
 	 * @param width
 	 *            - the width of the {@link MoveableCharacter}
 	 * @param height
@@ -83,17 +82,6 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * set the direction of the {@link MoveableCharacter} on the y axis
-	 * 
-	 * @param directionY
-	 *            - the new direction of the {@link MoveableCharacter}.
-	 * @see DirectionsTuple.DirectionY
-	 */
-	public void setDirectionY(DirectionY directionY) {
-		this.currentDirections.directionY = directionY;
-	}
-
-	/**
 	 * sets the absolute speed of the Sprite on the X axis
 	 * 
 	 * @param speedX
@@ -138,14 +126,6 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * @return the direction of the {@link MoveableCharacter} on the y axis
-	 * @see DirectionsTuple.DirectionY
-	 */
-	public DirectionY getDirectionY() {
-		return currentDirections.directionY;
-	}
-
-	/**
 	 * returns the absolute speed of the Sprite on the X axis
 	 * 
 	 * @return The absolute speed of the Sprite on the X axis
@@ -180,47 +160,15 @@ public abstract class MoveableCharacter extends JComponent {
 	/////////////////// other methods /////////////////
 
 	/**
-	 * this method adds or subtracts the speed of the {@link MoveableCharacter} from
-	 * its location on each axis according to its current movement-direction on each
-	 * axis.
-	 * 
-	 * if the direction does not require movement - this method will do nothing and
-	 * the location value on that axis will stay the same
-	 * 
-	 */
-	public void moveOneStep() {
-
-		switch (currentDirections.directionX) {
-		case MOVE_RIGHT:
-			x = x + speedX;
-			break;
-		case MOVE_LEFT:
-			x = x - speedX;
-			break;
-		default:
-			break;
-		}
-
-		switch (currentDirections.directionY) {
-		case DOWN:
-			y = y + WorldConstants.PHYSICS.FALLING_SPEED;
-			break;
-		case UP:
-			y = y - speedY;
-			break;
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * this method moves the {@link MoveableCharacter} to the target x,y position
-	 * and updates its {@link DirectionsTuple} accordingly
+	 * this method moves the {@link MoveableCharacter} to the target x,y
+	 * position and updates its {@link DirectionsTuple} accordingly
 	 * 
 	 * @param newX
-	 *            - the desired x location to the {@link MoveableCharacter} to be at
+	 *            - the desired x location to the {@link MoveableCharacter} to
+	 *            be at
 	 * @param newY
-	 *            - the desired y location to the {@link MoveableCharacter} to be at
+	 *            - the desired y location to the {@link MoveableCharacter} to
+	 *            be at
 	 * @see DirectionsTuple
 	 */
 	public void moveToLocation(int newX, int newY) {
@@ -236,8 +184,8 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * this method changes the Y direction of the {@link MoveableCharacter} to be UP
-	 * (thus making it move up) for a short time, and then stops
+	 * this method changes the Y direction of the {@link MoveableCharacter} to
+	 * be UP (thus making it move up) for a short time, and then stops
 	 */
 	public void TryToJump() {
 		if (isJumping) {
@@ -249,7 +197,8 @@ public abstract class MoveableCharacter extends JComponent {
 			@Override
 			public void run() {
 				isJumping = true;
-				currentDirections.directionY = DirectionY.UP;
+				// currentDirections.directionY = DirectionY.UP;
+				speedY = WorldConstants.PHYSICS.JUMPING_SPEED;
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -283,13 +232,15 @@ public abstract class MoveableCharacter extends JComponent {
 				// the character is above the surface on the x axis.
 				if (this.x + this.WIDTH >= surface.getX() && this.x <= surface.getX() + surface.getWidth()) {
 					// the character is standing
-					currentDirections.directionY = DirectionY.STILL;
+					// currentDirections.directionY = DirectionY.STILL;
+					speedY = 0;
 					return;
 				}
 			}
 		}
 		// not jumping and not standing on a surface
-		currentDirections.directionY = DirectionY.DOWN;
+		// currentDirections.directionY = DirectionY.DOWN;
+		speedY = WorldConstants.PHYSICS.FALLING_SPEED;
 	}
 
 	public abstract void draw(Graphics g);

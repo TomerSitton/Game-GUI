@@ -24,6 +24,7 @@ public class WorldConstants {
 
 	public static interface PHYSICS {
 		public static final int FALLING_SPEED = 5;
+		public static final int JUMPING_SPEED = -10;
 	}
 
 }

@@ -9,9 +9,10 @@ import javax.swing.ImageIcon;
 
 import Game.DirectionsTuple.DirectionX;
 
-public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
+public abstract class Sprite2 extends MoveableCharacter /* implements Cyclic */ {
 	/**
-	 * a double dimensional array representing the different states of the sprite
+	 * a double dimensional array representing the different states of the
+	 * sprite
 	 */
 	private Image[][] COSTUMES;
 	/**
@@ -19,8 +20,8 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 	 */
 	public BufferedImage bufferedImage;
 	/**
-	 * the number of rows and columns in the original sprite image (i.e the number
-	 * of rows and columns in the {@link Sprite2#COSTUMES} variable
+	 * the number of rows and columns in the original sprite image (i.e the
+	 * number of rows and columns in the {@link Sprite2#COSTUMES} variable
 	 */
 	protected final int ROWS, COLUMNS;
 	/**
@@ -71,9 +72,9 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 	}
 
 	/**
-	 * this method cuts the sprite image in the right places (by rows and columns)
-	 * and saves it in a double dimensional array named COSTUMES which represent the
-	 * individual images of the character.
+	 * this method cuts the sprite image in the right places (by rows and
+	 * columns) and saves it in a double dimensional array named COSTUMES which
+	 * represent the individual images of the character.
 	 * 
 	 * @param imageIcon
 	 */
@@ -102,49 +103,15 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 	}
 
 	/**
-	 * this method handles one cycle of the {@link Sprite2}. each cycle moves the
-	 * character one step.
-	 */
-	@Override
-	public void oneCycle(Surface[] surfaces) {
-		moveOneStep();
-		fall(surfaces);
-	}
-
-	/**
-	 * this calls the {@link MoveableCharacter#moveOneStep()} method to move the
-	 * character, and also changes the sprite's its column and row values in order
-	 * to fit the correct image in the COSTUMES images array
-	 * 
-	 * @see Sprite2#getNextColumn()
-	 */
-	@Override
-	public void moveOneStep() {
-		super.moveOneStep();
-		switch (currentDirections.directionX) {
-		case MOVE_RIGHT:
-			currentRow = 0;
-			currentColumn = getNextColumn();
-			break;
-		case MOVE_LEFT:
-			currentRow = 1;
-			currentColumn = getNextColumn();
-			break;
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * this method calls the {@link MoveableCharacter#moveToLocation(newX, newY)}
-	 * method, and also and also changes the sprite's its column and row values in
-	 * order to fit the correct image in the COSTUMES images array
+	 * this method calls the
+	 * {@link MoveableCharacter#moveToLocation(newX, newY)} method, and also and
+	 * also changes the sprite's its column and row values in order to fit the
+	 * correct image in the COSTUMES images array
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
 		super.moveToLocation(newX, newY);
-		if (currentDirections.directionX == DirectionX.MOVE_RIGHT
-				|| currentDirections.directionX == DirectionX.LOOK_RIGHT) {
+		if (currentDirections.directionX == DirectionX.LOOK_RIGHT) {
 			currentRow = 0;
 			currentColumn = getNextColumn();
 		} else {
@@ -156,7 +123,8 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 
 	/**
 	 * this method returns the next column of the sprite image (if the current
-	 * column is the last column in the image, than it will return the first column)
+	 * column is the last column in the image, than it will return the first
+	 * column)
 	 * 
 	 * @return - the column after the current column in the sprite's image
 	 */
@@ -169,8 +137,8 @@ public abstract class Sprite2 extends MoveableCharacter implements Cyclic {
 	}
 
 	/**
-	 * this method draws the {@link Sprite2} using its current row and column, and
-	 * its current x and y values
+	 * this method draws the {@link Sprite2} using its current row and column,
+	 * and its current x and y values
 	 */
 	@Override
 	public void draw(Graphics g) {

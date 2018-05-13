@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.ObjectStreamException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +22,12 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	private Player myPlayer;
 	private JFrame frame;
 	private Surface[] surfaces = new Surface[1];
+	private HashMap<String, Boolean> keys = new HashMap<String, Boolean>() {
+		{
+			put("RIGHT", false);
+			put("LEFT", false);
+		}
+	};
 
 	public Main() {
 
@@ -93,7 +100,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		while (true) {
 			// TODO - move the repaint to the end of the while loop and remove
 			// the call to repaint in the moveOneStep method
-			Sprite2.getExistingSprites().forEach((s) -> s.oneCycle(surfaces));
+			Sprite2.getExistingSprites().forEach((s) -> s.fall(surfaces));
+			Sprite2.getExistingSprites()
+					.forEach((s) -> s.moveToLocation(s.getX() + s.getSpeedX(), s.getY() + s.getSpeedY()));
 			repaint();
 			myPlayer.sendData("[" + myPlayer.getX() + "," + myPlayer.getY() + "]\n");
 			updatePlayersLocations();
@@ -117,10 +126,14 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_RIGHT:
-			myPlayer.setDirectionX(DirectionX.MOVE_RIGHT);
+			myPlayer.setDirectionX(DirectionX.LOOK_RIGHT);
+			keys.put("RIGHT", true);
+			myPlayer.setSpeedX(Player.SPEED_X);
 			break;
 		case KeyEvent.VK_LEFT:
-			myPlayer.setDirectionX(DirectionX.MOVE_LEFT);
+			myPlayer.setDirectionX(DirectionX.LOOK_LEFT);
+			myPlayer.setSpeedX(-Player.SPEED_X);
+			keys.put("LEFT", true);
 			break;
 		case KeyEvent.VK_SPACE:
 			myPlayer.TryToJump();
@@ -135,12 +148,17 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	// TODO - make it work with the new version of keyPressed
 	@Override
 	public void keyReleased(KeyEvent e) {
+		System.out.println("released");
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			myPlayer.setDirectionX(DirectionX.LOOK_LEFT);
-			break;
 		case KeyEvent.VK_RIGHT:
-			myPlayer.setDirectionX(DirectionX.LOOK_RIGHT);
+			if (keys.get("LEFT") == false)
+				myPlayer.setSpeedX(0);
+			keys.put("RIGHT", false);
+			break;
+		case KeyEvent.VK_LEFT:
+			if (keys.get("RIGHT") == false)
+				myPlayer.setSpeedX(0);
+			keys.put("RIGHT", false);
 			break;
 		}
 	}
@@ -166,7 +184,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		for (int i = 0; i < players.length; i++) {
 			/** handle strings **/
 			location = data.substring(data.indexOf('['), data.indexOf(']') + 1).replaceAll("\\s", "").replace("'", "");
-			System.out.println("location for " + i + " - " + location);
+			// System.out.println("location for " + i + " - " + location);
 			// cutting the last location from the string
 			data = data.substring(data.indexOf(']') + 1);
 
