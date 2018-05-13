@@ -166,4 +166,8 @@ public abstract class Sprite2 extends MoveableCharacter {
 		}
 		return touching;
 	}
+
+	public void removeSprite() {
+		existingSprites.remove(this);
+	}
 }

@@ -1,12 +1,12 @@
 package Game;
 
-import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectStreamException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 //TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
@@ -25,11 +25,16 @@ public class Player extends Sprite2 {
 	public static final int HEIGHT = 150;
 	public static final int SPEED_X = 25;
 	public static final int SPEED_Y = 20;
+	private int health = 3;
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
 		if (isMyPlayer)
 			initSocketStreams();
+	}
+
+	public int getHealth() {
+		return health;
 	}
 
 	/**
@@ -62,12 +67,13 @@ public class Player extends Sprite2 {
 
 	/**
 	 * send data to the server. </br>
-	 * In the game, the data sent to the the server is represented like this: </br>
+	 * In the game, the data sent to the the server is represented like this:
+	 * </br>
 	 * </br>
 	 * "(newX,newY)\n" </br>
 	 * </br>
-	 * so if for example my character moved from (0,0) to (10,12), the data to be
-	 * sent to the server will look like this:</br>
+	 * so if for example my character moved from (0,0) to (10,12), the data to
+	 * be sent to the server will look like this:</br>
 	 * "(10,12)\n"
 	 * 
 	 * @param data
@@ -88,5 +94,57 @@ public class Player extends Sprite2 {
 	 */
 	public String recieveData() {
 		return Network.recieveDataFromServer(this.inputStreamFromServer);
+	}
+
+	public void attack() {
+		new FireAttack(this);
+	}
+
+	public void looseHealth() {
+		health--;
+	}
+
+	public class FireAttack extends Sprite2 implements Runnable {
+
+		public static final String URL = "img/fireAttack.png";
+		public static final int ROWS = 2;
+		public static final int COLUMNS = 6;
+		public static final int WIDTH = 50;
+		public static final int HEIGHT = 50;
+		public static final int SPEED_X = 15;
+		public static final int SPEED_Y = 0;
+		private Player myPlayer;
+		private boolean isLookingRight;
+
+		public FireAttack(Player player) {
+			super(player.getX(), player.getY(), URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
+			this.myPlayer = player;
+			isLookingRight = myPlayer.isLookingRight();
+			new Thread(this).start();
+
+		}
+
+		@Override
+		public void run() {
+			while (this.x < WorldConstants.Frame.WIDTH && this.x + WIDTH > WorldConstants.Frame.X) {
+				for (Sprite2 sprite : this.spritesTouching()) {
+					if (sprite instanceof Player && sprite != this.myPlayer) {
+						((Player) sprite).looseHealth();
+						System.out.println(((Player) sprite).getHealth());
+					}
+				}
+				if (isLookingRight)
+					x = x + speedX;
+				else
+					x = x - speedX;
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			this.removeSprite();
+		}
 	}
 }
