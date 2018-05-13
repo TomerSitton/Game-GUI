@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 public abstract class MoveableCharacter extends JComponent {
-	private int x, y;
+	protected int x, y;
 	public final int WIDTH, HEIGHT;
 	private boolean isJumping, onTheGround;
-	private int speedX, speedY;
+	protected int speedX, speedY;
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
