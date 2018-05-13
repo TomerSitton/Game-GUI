@@ -18,7 +18,7 @@ public class Player extends Sprite2 {
 
 	private int index = -1;
 
-	public static final String URL = "img/sprite-boy-running.png";
+	public static final String URL = "img/player1.png";
 	public static final int ROWS = 2;
 	public static final int COLUMNS = 8;
 	public static final int WIDTH = 110;
