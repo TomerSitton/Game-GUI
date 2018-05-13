@@ -205,6 +205,13 @@ public abstract class MoveableCharacter extends JComponent {
 		return WorldConstants.PHYSICS.FALLING_SPEED;
 	}
 
+	public boolean isTouching(MoveableCharacter otherCharacter) {
+		if (x + WIDTH >= otherCharacter.x && x <= otherCharacter.x + otherCharacter.WIDTH)
+			if (y + HEIGHT >= otherCharacter.y && y <= otherCharacter.getY() + otherCharacter.HEIGHT)
+				return true;
+		return false;
+	}
+
 	public abstract void draw(Graphics g);
 
 }
