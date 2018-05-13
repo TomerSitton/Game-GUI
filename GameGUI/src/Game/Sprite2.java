@@ -31,6 +31,8 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 * {@link Sprite2#COSTUMES} variable
 	 */
 	private int currentRow = 0, currentColumn = 0;
+
+	private boolean isLookingRight = true;
 	/**
 	 * and {@link ArrayList} representing the all the existing sprites
 	 */
@@ -110,8 +112,10 @@ public abstract class Sprite2 extends MoveableCharacter {
 	public void moveToLocation(int newX, int newY) {
 		if (newX > getX()) {
 			currentRow = 0;
+			isLookingRight = true;
 		} else if (newX < getX()) {
 			currentRow = 1;
+			isLookingRight = false;
 		}
 		currentColumn = getNextColumn();
 		super.moveToLocation(newX, newY);
@@ -130,6 +134,10 @@ public abstract class Sprite2 extends MoveableCharacter {
 		else
 			currentColumn++;
 		return currentColumn;
+	}
+
+	public boolean isLookingRight() {
+		return isLookingRight;
 	}
 
 	/**
