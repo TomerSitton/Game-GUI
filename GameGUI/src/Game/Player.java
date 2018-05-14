@@ -35,10 +35,6 @@ public class Player extends Sprite2 {
 			initSocketStreams();
 	}
 
-	public int getHealth() {
-		return health;
-	}
-
 	/**
 	 * initialize the client's sockets and I/O streams
 	 */
@@ -66,6 +62,7 @@ public class Player extends Sprite2 {
 		}
 		return index;
 	}
+	
 
 	/**
 	 * send data to the server. </br>
@@ -110,6 +107,10 @@ public class Player extends Sprite2 {
 		health--;
 	}
 
+	public int getHealth() {
+		return health;
+	}
+	
 	public void setHealth(int health) {
 		this.health = health;
 	}
