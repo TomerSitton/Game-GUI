@@ -18,8 +18,8 @@ public class Player extends Sprite2 {
 
 	private int index = -1;
 
-	public static final String URL = "img/player1.png";
-	public static final int ROWS = 2;
+	public static final String URL = "img/player1-test2.png";
+	public static final int ROWS = 4;
 	public static final int COLUMNS = 8;
 	public static final int WIDTH = 110;
 	public static final int HEIGHT = 150;
@@ -105,6 +105,22 @@ public class Player extends Sprite2 {
 	public void looseHealth() {
 		health--;
 		System.out.println("x: " + getX() + " health: " + getHealth());
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				costumeConst = 2;
+				try {
+					Thread.sleep(700);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				costumeConst = 0;
+				System.out.println("bla");
+			}
+		}).start();
+
 	}
 
 	public int getHealth() {
