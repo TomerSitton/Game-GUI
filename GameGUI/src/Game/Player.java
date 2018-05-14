@@ -8,8 +8,6 @@ import java.io.ObjectStreamException;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.sound.midi.Synthesizer;
-
 //TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
 
@@ -20,8 +18,8 @@ public class Player extends Sprite2 {
 
 	private int index = -1;
 
-	public static final String URL = "img/player1.png";
-	public static final int ROWS = 2;
+	public static final String URL = "img/player1-2.0.png";
+	public static final int ROWS = 4;
 	public static final int COLUMNS = 8;
 	public static final int WIDTH = 110;
 	public static final int HEIGHT = 150;
@@ -105,8 +103,23 @@ public class Player extends Sprite2 {
 	}
 
 	public void looseHealth() {
+		if (costumeConst != 0)
+			return;
 		health--;
-		System.out.println("x: " + getX() + " health: " + getHealth());
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				costumeConst = 2;
+				try {
+					Thread.sleep(700);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				costumeConst = 0;
+			}
+		}).start();
+
 	}
 
 	public int getHealth() {

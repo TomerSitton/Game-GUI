@@ -29,13 +29,15 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 * the current row/column, representing the current costume, in the
 	 * {@link Sprite2#COSTUMES} variable
 	 */
-	private int currentRow = 0, currentColumn = 0;
+	protected int currentRow = 0, currentColumn = 0;
 
 	private boolean isLookingRight = true;
 	/**
 	 * and {@link ArrayList} representing the all the existing sprites
 	 */
 	private final static ArrayList<Sprite2> existingSprites = new ArrayList<>();
+
+	protected int costumeConst = 0;
 
 	/////////////////// setters /////////////////
 	/**
@@ -109,12 +111,16 @@ public abstract class Sprite2 extends MoveableCharacter {
 	@Override
 	public void moveToLocation(int newX, int newY) {
 		if (newX > getX()) {
-			currentRow = 0;
+			currentRow = 0 + costumeConst;
 			isLookingRight = true;
 		} else if (newX < getX()) {
-			currentRow = 1;
+			currentRow = 1 + costumeConst;
 			isLookingRight = false;
-		}
+		} else if (isLookingRight)
+			currentRow = 0 + costumeConst;
+		else
+			currentRow = 1 + costumeConst;
+
 		currentColumn = getNextColumn();
 		super.moveToLocation(newX, newY);
 	}
