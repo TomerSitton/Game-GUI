@@ -10,6 +10,7 @@ import java.io.ObjectStreamException;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.sound.midi.Synthesizer;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -101,10 +102,11 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
-			// send positions to the server
-			myPlayer.sendData("[" + newX + "," + newY + "]\n");
+			myPlayer.moveToLocation(newX, newY);
+			// send player's state to the server
+			myPlayer.sendData();
 			// receive positions of all the players and update the frame
-			updatePlayersLocations();
+			updateFrame();
 			repaint();
 			try {
 				Thread.sleep(15);
@@ -119,9 +121,6 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	 * this method handles the keyboard requests. it changes the direction of
 	 * the character accordingly
 	 */
-	// TODO - why is it just changing the direction? why not changing the
-	// direction to look to the right one and ALSO call the movement method (i.e
-	// changing the x and y values)
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -134,7 +133,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			keys.put("LEFT", true);
 			break;
 		case KeyEvent.VK_SPACE:
-			myPlayer.attack();
+			myPlayer.setAttackingChar('F');
 			break;
 		case KeyEvent.VK_UP:
 			myPlayer.TryToJump();
@@ -167,41 +166,39 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	}
 
-	/**
-	 * 
-	 * @return - an array of points which represents the locations of the
-	 *         players received from the server
-	 */
-	private Point[] getPlayersLocations() {
-		// Receive data from server
+	public void updateFrame() {
+		/*
+		 * Receive data from server - looking like this:
+		 * "1_[22,32]_N ~ 2_[100,110]_F ~ \n"
+		 */
 		String data = myPlayer.recieveData();
-		// the location string for each player would look like this:['x','y']
-		String location;
-		// the locations of the players
-		Point[] playersLocations = new Point[players.length];
+//		System.out.println(data);
+		/*
+		 * the state of each player: "1_[22,32]_N" for player one and
+		 * "2_[100,110]_F" for player two
+		 */
+		String states[] = data.split(" ~ ");
 
 		for (int i = 0; i < players.length; i++) {
-			/** handle strings **/
-			location = data.substring(data.indexOf('['), data.indexOf(']') + 1).replaceAll("\\s", "").replace("'", "");
-//			System.out.println("location for " + i + " - " + location);
-			// cutting the last location from the string
-			data = data.substring(data.indexOf(']') + 1);
+			/*
+			 * splitting each state to the wanted values: values[0] = health
+			 * (int) values[1] = location (list) values[3] = attackingChar
+			 * (char)
+			 */
+			String[] values = states[i].split("_");
 
-			/** handle points **/
-			int x = Integer.parseInt(location.substring(location.indexOf('[') + 1, location.indexOf(',')));
-			int y = Integer.parseInt(location.substring(location.indexOf(',') + 1, location.indexOf(']')));
-			playersLocations[i] = new Point(x, y);
-		}
-		return playersLocations;
-	}
+			players[i].setHealth(Integer.parseInt(values[0]));
+			/*
+			 * the location of the player, represented by an array which its
+			 * values are "x" and "y"
+			 */
+			String[] location = values[1].replace("]", "").replace("[", "").split(",");
+			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
-	/**
-	 * changes the players positions to those received by the server
-	 */
-	public void updatePlayersLocations() {
-		Point[] locations = getPlayersLocations();
-		for (int i = 0; i < players.length; i++) {
-			players[i].moveToLocation((int) locations[i].getX(), (int) locations[i].getY());
+			System.out.println(values[2]);
+			if (values[2].equals("F"))
+				players[i].attack();
+
 		}
 	}
 

@@ -26,10 +26,13 @@ public class Player extends Sprite2 {
 	public static final int SPEED_X = 25;
 	public static final int SPEED_Y = 20;
 	private int health = 3;
+	private char attackingChar = 'N';
 	private ArrayList<FireAttack> attacks = new ArrayList<>();
+	private boolean isMyPlayer;
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
+		this.isMyPlayer = isMyPlayer;
 		if (isMyPlayer)
 			initSocketStreams();
 	}
@@ -77,11 +80,12 @@ public class Player extends Sprite2 {
 	 * be sent to the server will look like this:</br>
 	 * "(10,12)\n"
 	 * 
-	 * @param data
-	 *            - the data to be sent to the server
 	 */
-	public void sendData(String data) {
-		Network.sendDataToServer(this.outputStreamToServer, data);
+	public void sendData() {
+		String state = this.health + "_[" + this.x + "," + this.y + "]_" + this.attackingChar + "\n";
+		Network.sendDataToServer(this.outputStreamToServer, state);
+		if (attackingChar == 'F')
+			attackingChar = 'N';
 	}
 
 	/**
@@ -101,17 +105,25 @@ public class Player extends Sprite2 {
 		attacks.add(new FireAttack(this));
 	}
 
+	public void setAttackingChar(char attackingChar) {
+		this.attackingChar = attackingChar;
+	}
+
 	public void looseHealth() {
 		health--;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
 	@Override
 	public void moveToLocation(int newX, int newY) {
 		super.moveToLocation(newX, newY);
-		for (FireAttack attack : attacks) {
-			attack.move();
-			if (!Sprite2.getExistingSprites().contains(attack))
-				attacks.remove(attack);
+		for (int i = 0; i < attacks.size(); i++) {
+			attacks.get(i).move();
+			if (!Sprite2.getExistingSprites().contains(attacks.get(i)))
+				attacks.remove(attacks.get(i));
 		}
 	}
 
