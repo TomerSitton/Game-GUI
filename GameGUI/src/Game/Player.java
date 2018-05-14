@@ -8,6 +8,8 @@ import java.io.ObjectStreamException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.sound.midi.Synthesizer;
+
 //TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
 
@@ -62,7 +64,6 @@ public class Player extends Sprite2 {
 		}
 		return index;
 	}
-	
 
 	/**
 	 * send data to the server. </br>
@@ -76,7 +77,7 @@ public class Player extends Sprite2 {
 	 * 
 	 */
 	public void sendData(int newX, int newY) {
-		String state = this.health + "_[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
+		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
 			attackingChar = 'N';
@@ -105,14 +106,15 @@ public class Player extends Sprite2 {
 
 	public void looseHealth() {
 		health--;
+		System.out.println("x: " + getX() + " health: " + getHealth());
 	}
 
 	public int getHealth() {
 		return health;
 	}
-	
-	public void setHealth(int health) {
-		this.health = health;
+
+	public ArrayList<FireAttack> getAttacks() {
+		return attacks;
 	}
 
 	@Override
@@ -120,8 +122,6 @@ public class Player extends Sprite2 {
 		super.moveToLocation(newX, newY);
 		for (int i = 0; i < attacks.size(); i++) {
 			attacks.get(i).move();
-			if (!Sprite2.getExistingSprites().contains(attacks.get(i)))
-				attacks.remove(attacks.get(i));
 		}
 	}
 

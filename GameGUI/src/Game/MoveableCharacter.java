@@ -14,11 +14,11 @@ public abstract class MoveableCharacter extends JComponent {
 	 * constructs a new {@link MoveableCharacter} with the given arguments
 	 * 
 	 * @param x
-	 *            - the starting location of the {@link MoveableCharacter} on
-	 *            the x axis
+	 *            - the starting location of the {@link MoveableCharacter} on the x
+	 *            axis
 	 * @param y
-	 *            - the starting location of the {@link MoveableCharacter} on
-	 *            the y axis
+	 *            - the starting location of the {@link MoveableCharacter} on the y
+	 *            axis
 	 * @param width
 	 *            - the width of the {@link MoveableCharacter}
 	 * @param height
@@ -132,15 +132,13 @@ public abstract class MoveableCharacter extends JComponent {
 	/////////////////// other methods /////////////////
 
 	/**
-	 * this method moves the {@link MoveableCharacter} to the target x,y
-	 * position and updates its {@link DirectionEnum} accordingly
+	 * this method moves the {@link MoveableCharacter} to the target x,y position
+	 * and updates its {@link DirectionEnum} accordingly
 	 * 
 	 * @param newX
-	 *            - the desired x location to the {@link MoveableCharacter} to
-	 *            be at
+	 *            - the desired x location to the {@link MoveableCharacter} to be at
 	 * @param newY
-	 *            - the desired y location to the {@link MoveableCharacter} to
-	 *            be at
+	 *            - the desired y location to the {@link MoveableCharacter} to be at
 	 * @see DirectionEnum
 	 */
 	public void moveToLocation(int newX, int newY) {
@@ -149,8 +147,8 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * this method changes the Y direction of the {@link MoveableCharacter} to
-	 * be UP (thus making it move up) for a short time, and then stops
+	 * this method changes the Y direction of the {@link MoveableCharacter} to be UP
+	 * (thus making it move up) for a short time, and then stops
 	 */
 	public void TryToJump() {
 		if (isJumping || !onTheGround) {
@@ -168,11 +166,9 @@ public abstract class MoveableCharacter extends JComponent {
 					e.printStackTrace();
 				}
 				isJumping = false;
-				System.out.println("end run");
 			}
 		}).start();
 
-		System.out.println("end try jump");
 	}
 
 	/**
