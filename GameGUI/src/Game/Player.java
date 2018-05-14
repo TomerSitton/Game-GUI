@@ -28,11 +28,9 @@ public class Player extends Sprite2 {
 	private int health = 3;
 	private char attackingChar = 'N';
 	private ArrayList<FireAttack> attacks = new ArrayList<>();
-	private boolean isMyPlayer;
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
-		this.isMyPlayer = isMyPlayer;
 		if (isMyPlayer)
 			initSocketStreams();
 	}
