@@ -106,7 +106,6 @@ public class Player extends Sprite2 {
 		if (costumeConst != 0)
 			return;
 		health--;
-		System.out.println("x: " + getX() + " health: " + getHealth());
 		new Thread(new Runnable() {
 
 			@Override
@@ -115,11 +114,9 @@ public class Player extends Sprite2 {
 				try {
 					Thread.sleep(700);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				costumeConst = 0;
-				System.out.println("bla");
 			}
 		}).start();
 

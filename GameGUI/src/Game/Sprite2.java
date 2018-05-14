@@ -121,7 +121,6 @@ public abstract class Sprite2 extends MoveableCharacter {
 		else
 			currentRow = 1 + costumeConst;
 
-		System.out.println("row - " + currentRow + " const" + costumeConst);
 		currentColumn = getNextColumn();
 		super.moveToLocation(newX, newY);
 	}
