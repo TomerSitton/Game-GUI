@@ -103,6 +103,8 @@ public class Player extends Sprite2 {
 	}
 
 	public void looseHealth() {
+		if (costumeConst != 0)
+			return;
 		health--;
 		System.out.println("x: " + getX() + " health: " + getHealth());
 		new Thread(new Runnable() {
