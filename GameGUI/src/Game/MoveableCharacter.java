@@ -202,6 +202,8 @@ public abstract class MoveableCharacter extends JComponent {
 		}
 		// not jumping and not standing on a surface
 		onTheGround = false;
+		if (this instanceof Flying)
+			return 0;
 		return WorldConstants.PHYSICS.FALLING_SPEED;
 	}
 
