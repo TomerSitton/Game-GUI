@@ -9,8 +9,7 @@ import javax.swing.ImageIcon;
 
 public abstract class Sprite2 extends MoveableCharacter {
 	/**
-	 * a double dimensional array representing the different states of the
-	 * sprite
+	 * a double dimensional array representing the different states of the sprite
 	 */
 	private Image[][] COSTUMES;
 	/**
@@ -18,8 +17,8 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 */
 	public BufferedImage bufferedImage;
 	/**
-	 * the number of rows and columns in the original sprite image (i.e the
-	 * number of rows and columns in the {@link Sprite2#COSTUMES} variable
+	 * the number of rows and columns in the original sprite image (i.e the number
+	 * of rows and columns in the {@link Sprite2#COSTUMES} variable
 	 */
 	private final int ROWS, COLUMNS;
 	/**
@@ -72,9 +71,9 @@ public abstract class Sprite2 extends MoveableCharacter {
 	}
 
 	/**
-	 * this method cuts the sprite image in the right places (by rows and
-	 * columns) and saves it in a double dimensional array named COSTUMES which
-	 * represent the individual images of the character.
+	 * this method cuts the sprite image in the right places (by rows and columns)
+	 * and saves it in a double dimensional array named COSTUMES which represent the
+	 * individual images of the character.
 	 * 
 	 * @param imageIcon
 	 */
@@ -103,10 +102,9 @@ public abstract class Sprite2 extends MoveableCharacter {
 	}
 
 	/**
-	 * this method calls the
-	 * {@link MoveableCharacter#moveToLocation(newX, newY)} method, and also and
-	 * also changes the sprite's its column and row values in order to fit the
-	 * correct image in the COSTUMES images array
+	 * this method calls the {@link MoveableCharacter#moveToLocation(newX, newY)}
+	 * method, and also and also changes the sprite's its column and row values in
+	 * order to fit the correct image in the COSTUMES images array
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
@@ -123,8 +121,7 @@ public abstract class Sprite2 extends MoveableCharacter {
 
 	/**
 	 * this method returns the next column of the sprite image (if the current
-	 * column is the last column in the image, than it will return the first
-	 * column)
+	 * column is the last column in the image, than it will return the first column)
 	 * 
 	 * @return - the column after the current column in the sprite's image
 	 */
@@ -141,8 +138,8 @@ public abstract class Sprite2 extends MoveableCharacter {
 	}
 
 	/**
-	 * this method draws the {@link Sprite2} using its current row and column,
-	 * and its current x and y values
+	 * this method draws the {@link Sprite2} using its current row and column, and
+	 * its current x and y values
 	 */
 	@Override
 	public void draw(Graphics g) {
@@ -151,12 +148,19 @@ public abstract class Sprite2 extends MoveableCharacter {
 
 	/**
 	 * 
-	 * @return the number of existing sprites
+	 * @return the number of existing {@link Sprite2} instances
 	 */
 	public static ArrayList<Sprite2> getExistingSprites() {
 		return existingSprites;
 	}
 
+	/**
+	 * returns an {@link ArrayList} containing all the {@link Sprite2}s that are
+	 * currently touching the sprite this method ran on
+	 * 
+	 * @return - an {@link ArrayList} containing all the {@link Sprite2}s touching
+	 *         my sprite
+	 */
 	public ArrayList<Sprite2> spritesTouching() {
 		ArrayList<Sprite2> touching = new ArrayList<>();
 		for (Sprite2 sprite : existingSprites) {
@@ -167,6 +171,11 @@ public abstract class Sprite2 extends MoveableCharacter {
 		return touching;
 	}
 
+	/**
+	 * removes a sprite form the existingSprites {@link ArrayList}
+	 * 
+	 * @see Sprite2#getExistingSprites()
+	 */
 	public void removeSprite() {
 		existingSprites.remove(this);
 	}
