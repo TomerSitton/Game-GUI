@@ -1,6 +1,6 @@
 package Game;
 
-public class FireAttack extends Sprite2 implements Runnable, Flying {
+public class FireAttack extends Sprite2 implements Flying {
 
 	public static final String URL = "img/fireAttack.png";
 	public static final int ROWS = 2;
@@ -16,30 +16,26 @@ public class FireAttack extends Sprite2 implements Runnable, Flying {
 		super(player.getX(), player.getY(), URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
 		this.myPlayer = player;
 		isLookingRight = myPlayer.isLookingRight();
-		new Thread(this).start();
 
 	}
 
-	@Override
-	public void run() {
-		while (this.x < WorldConstants.Frame.WIDTH && this.x + WIDTH > WorldConstants.Frame.X) {
+	public void move() {
+		if (this.x < WorldConstants.Frame.WIDTH && this.x + WIDTH > WorldConstants.Frame.X) {
+			// move
+			if (isLookingRight)
+				x = x + speedX;
+			else
+				x = x - speedX;
+			// check hit
 			for (Sprite2 sprite : this.spritesTouching()) {
 				if (sprite instanceof Player && sprite != this.myPlayer) {
 					((Player) sprite).looseHealth();
 					System.out.println(((Player) sprite).getHealth());
 				}
 			}
-			if (isLookingRight)
-				x = x + speedX;
-			else
-				x = x - speedX;
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		this.removeSprite();
+
+		} else
+			removeSprite();
 	}
+
 }

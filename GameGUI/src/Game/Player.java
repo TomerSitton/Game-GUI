@@ -26,6 +26,7 @@ public class Player extends Sprite2 {
 	public static final int SPEED_X = 25;
 	public static final int SPEED_Y = 20;
 	private int health = 3;
+	private ArrayList<FireAttack> attacks = new ArrayList<>();
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
@@ -97,11 +98,21 @@ public class Player extends Sprite2 {
 	}
 
 	public void attack() {
-		new FireAttack(this);
+		attacks.add(new FireAttack(this));
 	}
 
 	public void looseHealth() {
 		health--;
+	}
+
+	@Override
+	public void moveToLocation(int newX, int newY) {
+		super.moveToLocation(newX, newY);
+		for (FireAttack attack : attacks) {
+			attack.move();
+			if (!Sprite2.getExistingSprites().contains(attack))
+				attacks.remove(attack);
+		}
 	}
 
 }
