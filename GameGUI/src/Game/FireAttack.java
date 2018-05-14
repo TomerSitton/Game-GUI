@@ -7,7 +7,7 @@ public class FireAttack extends Sprite2 implements Flying {
 	public static final int COLUMNS = 6;
 	public static final int WIDTH = 50;
 	public static final int HEIGHT = 50;
-	public static final int SPEED_X = 15;
+	public static final int SPEED_X = 35;
 	public static final int SPEED_Y = 0;
 	private Player myPlayer;
 	private boolean isLookingRight;

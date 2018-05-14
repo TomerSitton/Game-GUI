@@ -102,9 +102,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
-			myPlayer.moveToLocation(newX, newY);
+//			myPlayer.moveToLocation(newX, newY);
 			// send player's state to the server
-			myPlayer.sendData();
+			myPlayer.sendData(newX, newY);
 			// receive positions of all the players and update the frame
 			updateFrame();
 			repaint();

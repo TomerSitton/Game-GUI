@@ -71,18 +71,17 @@ public class Player extends Sprite2 {
 
 	/**
 	 * send data to the server. </br>
-	 * In the game, the data sent to the the server is represented like this:
-	 * </br>
+	 * In the game, the data sent to the the server is represented like this: </br>
 	 * </br>
 	 * "(newX,newY)\n" </br>
 	 * </br>
-	 * so if for example my character moved from (0,0) to (10,12), the data to
-	 * be sent to the server will look like this:</br>
+	 * so if for example my character moved from (0,0) to (10,12), the data to be
+	 * sent to the server will look like this:</br>
 	 * "(10,12)\n"
 	 * 
 	 */
-	public void sendData() {
-		String state = this.health + "_[" + this.x + "," + this.y + "]_" + this.attackingChar + "\n";
+	public void sendData(int newX, int newY) {
+		String state = this.health + "_[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
 			attackingChar = 'N';
