@@ -104,8 +104,6 @@ public class Player extends Sprite2 {
 
 	public void looseHealth() {
 		health--;
-		System.out.print("loose health called for player x:" + this.x);
-		System.out.println(" health - "+getHealth());
 	}
 
 	public int getHealth() {
