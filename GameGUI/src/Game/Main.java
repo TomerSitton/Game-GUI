@@ -3,14 +3,12 @@ package Game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.ObjectStreamException;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.sound.midi.Synthesizer;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -102,10 +100,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
-//			myPlayer.moveToLocation(newX, newY);
 			// send player's state to the server
 			myPlayer.sendData(newX, newY);
-			// receive positions of all the players and update the frame
+			// receive states of all the players and update the frame
 			updateFrame();
 			repaint();
 			try {
@@ -172,7 +169,6 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		 * "1_[22,32]_N ~ 2_[100,110]_F ~ \n"
 		 */
 		String data = myPlayer.recieveData();
-//		System.out.println(data);
 		/*
 		 * the state of each player: "1_[22,32]_N" for player one and
 		 * "2_[100,110]_F" for player two
@@ -195,7 +191,6 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			String[] location = values[1].replace("]", "").replace("[", "").split(",");
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
-			System.out.println(values[2]);
 			if (values[2].equals("F"))
 				players[i].attack();
 
