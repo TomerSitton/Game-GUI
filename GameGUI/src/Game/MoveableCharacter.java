@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 public abstract class MoveableCharacter extends JComponent {
-	private int x, y;
+	protected int x, y;
 	public final int WIDTH, HEIGHT;
 	private boolean isJumping, onTheGround;
-	private int speedX, speedY;
+	protected int speedX, speedY;
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
@@ -202,7 +202,16 @@ public abstract class MoveableCharacter extends JComponent {
 		}
 		// not jumping and not standing on a surface
 		onTheGround = false;
+		if (this instanceof Flying)
+			return 0;
 		return WorldConstants.PHYSICS.FALLING_SPEED;
+	}
+
+	public boolean isTouching(MoveableCharacter otherCharacter) {
+		if (x + WIDTH >= otherCharacter.x && x <= otherCharacter.x + otherCharacter.WIDTH)
+			if (y + HEIGHT >= otherCharacter.y && y <= otherCharacter.getY() + otherCharacter.HEIGHT)
+				return true;
+		return false;
 	}
 
 	public abstract void draw(Graphics g);

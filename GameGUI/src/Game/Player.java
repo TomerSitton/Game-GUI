@@ -1,12 +1,12 @@
 package Game;
 
-import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectStreamException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 //TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
@@ -25,6 +25,9 @@ public class Player extends Sprite2 {
 	public static final int HEIGHT = 150;
 	public static final int SPEED_X = 25;
 	public static final int SPEED_Y = 20;
+	private int health = 3;
+	private char attackingChar = 'N';
+	private ArrayList<FireAttack> attacks = new ArrayList<>();
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
@@ -59,6 +62,7 @@ public class Player extends Sprite2 {
 		}
 		return index;
 	}
+	
 
 	/**
 	 * send data to the server. </br>
@@ -70,11 +74,12 @@ public class Player extends Sprite2 {
 	 * sent to the server will look like this:</br>
 	 * "(10,12)\n"
 	 * 
-	 * @param data
-	 *            - the data to be sent to the server
 	 */
-	public void sendData(String data) {
-		Network.sendDataToServer(this.outputStreamToServer, data);
+	public void sendData(int newX, int newY) {
+		String state = this.health + "_[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
+		Network.sendDataToServer(this.outputStreamToServer, state);
+		if (attackingChar == 'F')
+			attackingChar = 'N';
 	}
 
 	/**
@@ -89,4 +94,35 @@ public class Player extends Sprite2 {
 	public String recieveData() {
 		return Network.recieveDataFromServer(this.inputStreamFromServer);
 	}
+
+	public void attack() {
+		attacks.add(new FireAttack(this));
+	}
+
+	public void setAttackingChar(char attackingChar) {
+		this.attackingChar = attackingChar;
+	}
+
+	public void looseHealth() {
+		health--;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	@Override
+	public void moveToLocation(int newX, int newY) {
+		super.moveToLocation(newX, newY);
+		for (int i = 0; i < attacks.size(); i++) {
+			attacks.get(i).move();
+			if (!Sprite2.getExistingSprites().contains(attacks.get(i)))
+				attacks.remove(attacks.get(i));
+		}
+	}
+
 }
