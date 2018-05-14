@@ -62,7 +62,6 @@ public class Player extends Sprite2 {
 		}
 		return index;
 	}
-	
 
 	/**
 	 * send data to the server. </br>
@@ -105,14 +104,20 @@ public class Player extends Sprite2 {
 
 	public void looseHealth() {
 		health--;
+		System.out.print("loose health called for player x:" + this.x);
+		System.out.println(" health - "+getHealth());
 	}
 
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public ArrayList<FireAttack> getAttacks() {
+		return attacks;
 	}
 
 	@Override
@@ -120,8 +125,6 @@ public class Player extends Sprite2 {
 		super.moveToLocation(newX, newY);
 		for (int i = 0; i < attacks.size(); i++) {
 			attacks.get(i).move();
-			if (!Sprite2.getExistingSprites().contains(attacks.get(i)))
-				attacks.remove(attacks.get(i));
 		}
 	}
 

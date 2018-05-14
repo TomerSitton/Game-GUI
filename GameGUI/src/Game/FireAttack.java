@@ -9,13 +9,13 @@ public class FireAttack extends Sprite2 implements Flying {
 	public static final int HEIGHT = 50;
 	public static final int SPEED_X = 35;
 	public static final int SPEED_Y = 0;
-	private Player myPlayer;
+	private Player shootingPlayer;
 	private boolean isLookingRight;
 
 	public FireAttack(Player player) {
 		super(player.getX(), player.getY(), URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
-		this.myPlayer = player;
-		isLookingRight = myPlayer.isLookingRight();
+		this.shootingPlayer = player;
+		isLookingRight = shootingPlayer.isLookingRight();
 
 	}
 
@@ -28,13 +28,21 @@ public class FireAttack extends Sprite2 implements Flying {
 				x = x - speedX;
 			// check hit
 			for (Sprite2 sprite : this.spritesTouching()) {
-				if (sprite instanceof Player && sprite != this.myPlayer) {
+				System.out.println("touching");
+				if (sprite instanceof Player && sprite != this.shootingPlayer) {
 					((Player) sprite).looseHealth();
+					removeSprite();
 				}
 			}
 
 		} else
 			removeSprite();
+	}
+
+	@Override
+	public void removeSprite() {
+		super.removeSprite();
+		shootingPlayer.getAttacks().remove(this);
 	}
 
 }

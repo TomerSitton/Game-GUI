@@ -89,10 +89,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * this is the thread's function handling the cycles of the game. In each
-	 * run the function updates calculates the X and Y values of the player,
-	 * sends it to the server, and then receives the positions of the rest of
-	 * the players and updates them on the frame
+	 * this is the thread's function handling the cycles of the game. In each run
+	 * the function updates calculates the X and Y values of the player, sends it to
+	 * the server, and then receives the positions of the rest of the players and
+	 * updates them on the frame
 	 */
 	@Override
 	public void run() {
@@ -115,8 +115,8 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * this method handles the keyboard requests. it changes the direction of
-	 * the character accordingly
+	 * this method handles the keyboard requests. it changes the direction of the
+	 * character accordingly
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -170,23 +170,21 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		 */
 		String data = myPlayer.recieveData();
 		/*
-		 * the state of each player: "1_[22,32]_N" for player one and
-		 * "2_[100,110]_F" for player two
+		 * the state of each player: "1_[22,32]_N" for player one and "2_[100,110]_F"
+		 * for player two
 		 */
 		String states[] = data.split(" ~ ");
 
 		for (int i = 0; i < players.length; i++) {
 			/*
-			 * splitting each state to the wanted values: values[0] = health
-			 * (int) values[1] = location (list) values[3] = attackingChar
-			 * (char)
+			 * splitting each state to the wanted values: values[0] = health (int) values[1]
+			 * = location (list) values[3] = attackingChar (char)
 			 */
 			String[] values = states[i].split("_");
 
-			players[i].setHealth(Integer.parseInt(values[0]));
 			/*
-			 * the location of the player, represented by an array which its
-			 * values are "x" and "y"
+			 * the location of the player, represented by an array which its values are "x"
+			 * and "y"
 			 */
 			String[] location = values[1].replace("]", "").replace("[", "").split(",");
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
