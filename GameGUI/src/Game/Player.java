@@ -8,8 +8,6 @@ import java.io.ObjectStreamException;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.sound.midi.Synthesizer;
-
 //TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
 
