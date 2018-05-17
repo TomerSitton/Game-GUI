@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectStreamException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -25,14 +24,20 @@ public class Player extends Sprite2 {
 	public static final int HEIGHT = 150;
 	public static final int SPEED_X = 25;
 	public static final int SPEED_Y = 20;
-	private int health = 3;
+	private int health;
 	private char attackingChar = 'N';
 	private ArrayList<FireAttack> attacks = new ArrayList<>();
 
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
+		health = 3;
 		if (isMyPlayer)
 			initSocketStreams();
+	}
+
+	public Player(int x, int y, int index) {
+		this(x, y, false);
+		this.index = index;
 	}
 
 	/**
@@ -53,13 +58,9 @@ public class Player extends Sprite2 {
 	/**
 	 * 
 	 * @return the index of the player in the game
-	 * @throws ObjectStreamException
 	 */
-	public int getIndex() throws ObjectStreamException {
-		if (index == -1) {
-			throw new ObjectStreamException("the 'index' variable of that player has not yet been initialized") {
-			};
-		}
+	public int getIndex(){
+		System.out.println("index - " + index);
 		return index;
 	}
 
@@ -119,6 +120,8 @@ public class Player extends Sprite2 {
 				costumeConst = 0;
 			}
 		}).start();
+
+		System.out.println("player " + getIndex() + " got hit");
 
 	}
 

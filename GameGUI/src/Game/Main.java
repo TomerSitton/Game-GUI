@@ -62,20 +62,22 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		// initialize other players
 		players = new Player[Integer.parseInt(myPlayer.recieveData())];
 		for (int i = 0; i < players.length; i++) {
-			try {
 				if (i + 1 == myPlayer.getIndex())
 					players[i] = myPlayer;
 				else
-					players[i] = new Player(i * 100, 200, false);
-			} catch (ObjectStreamException e) {
-				e.printStackTrace();
-			}
+					players[i] = new Player(i * 100, 200, i+1);
 		}
 
 		// initialize the surfaces
 		surfaces[0] = new Surface(WorldConstants.GROUND.X, WorldConstants.GROUND.Y, WorldConstants.GROUND.WIDTH,
 				WorldConstants.GROUND.HEIGHT);
 		this.add(surfaces[0]);
+
+		for (Player player : players) {
+			for (int j = 0; j < player.getHealth(); j++) {
+				new Heart(player, j);
+			}
+		}
 	}
 
 	/**
@@ -165,20 +167,19 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	public void updateFrame() {
 		/*
-		 * Receive data from server - looking like this:
-		 * "[22,32]_N ~ [100,110]_F ~ \n"
+		 * Receive data from server - looking like this: "[22,32]_N ~ [100,110]_F ~ \n"
 		 */
 		String data = myPlayer.recieveData();
 		/*
-		 * the state of each player: "[22,32]_N" for player one and "[100,110]_F"
-		 * for player two
+		 * the state of each player: "[22,32]_N" for player one and "[100,110]_F" for
+		 * player two
 		 */
 		String states[] = data.split(" ~ ");
 
 		for (int i = 0; i < players.length; i++) {
 			/*
-			 * splitting each state to the wanted values: values[0]
-			 * = location (list) values[1] = attackingChar (char)
+			 * splitting each state to the wanted values: values[0] = location (list)
+			 * values[1] = attackingChar (char)
 			 */
 			String[] values = states[i].split("_");
 
