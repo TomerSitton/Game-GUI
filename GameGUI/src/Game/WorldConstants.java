@@ -26,4 +26,12 @@ public class WorldConstants {
 		public static final int FALLING_SPEED = 10;
 	}
 
+	public static interface HEARTS {
+		public static final int DISTANCE_INDIVIDUALS = 50;
+		public static final int DISTANCE_GROUPS = 200;
+
+		public static final int X = 10;
+		public static final int Y = 20;
+	}
+
 }
