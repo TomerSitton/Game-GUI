@@ -2,6 +2,7 @@ package Game;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -39,7 +40,6 @@ public abstract class Sprite2 extends MoveableCharacter {
 
 	protected int costumeConst = 0;
 
-	/////////////////// setters /////////////////
 	/**
 	 * this constructs a new {@link Sprite2} with the given parameters
 	 * 
@@ -70,6 +70,31 @@ public abstract class Sprite2 extends MoveableCharacter {
 		COLUMNS = columns;
 
 		handlePictures(new ImageIcon(url));
+	}
+
+	/**
+	 * this constructs a new {@link Sprite2} with the given parameters
+	 * 
+	 * @param location
+	 *            - the starting location of the {@link Sprite2} 
+	 * @param url
+	 *            - the url location of the image of the sprite
+	 * @param rows
+	 *            - the number of rows in the sprite image
+	 * @param columns
+	 *            - the number of rows in the sprite image
+	 * @param wantedWidth
+	 *            - the desired width of the {@link Sprite2}
+	 * @param wantedHeight
+	 *            - the desired height of the {@link Sprite2}
+	 * @param speedX
+	 *            - the speed of the {@link Sprite2} on the x axis
+	 * @param speedY
+	 *            - the speed of the {@link Sprite2} on the y axis
+	 */
+	public Sprite2(Point location, String url, int rows, int columns, int wantedWidth, int wantedHeight, int speedX,
+			int speedY) {
+		this((int) location.getX(), (int) location.getY(), url, rows, columns, wantedWidth, wantedHeight, speedX, speedY);
 	}
 
 	/**
