@@ -140,9 +140,9 @@ public class Player extends Sprite2 {
 			this.y = WorldConstants.HEARTS.Y;
 		} else {
 			super.moveToLocation(newX, newY);
-			for (int i = 0; i < attacks.size(); i++) {
-				attacks.get(i).move();
-			}
+		}
+		for (int i = 0; i < attacks.size(); i++) {
+			attacks.get(i).move();
 		}
 
 	}
