@@ -1,6 +1,6 @@
 package Game;
 
-public class WorldConstants {
+public abstract class WorldConstants {
 
 	public static interface Frame {
 		public static final int GROUND_LEVEL = 1100;
