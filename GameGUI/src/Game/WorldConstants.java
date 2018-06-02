@@ -30,6 +30,10 @@ public abstract class WorldConstants {
 		public static final int DISTANCE_INDIVIDUALS = 50;
 		public static final int DISTANCE_GROUPS = 200;
 
+		public static final int LEFT_HEART_INDEX = 0;
+		public static final int MIDDLE_HEART_INDEX = 1;
+		public static final int RIGHT_HEART_INDEX = 2;
+
 		public static final int X = 10;
 		public static final int Y = 20;
 	}
