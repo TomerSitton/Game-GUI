@@ -59,7 +59,7 @@ public class Player extends Sprite2 {
 	 * 
 	 * @return the index of the player in the game
 	 */
-	public int getIndex(){
+	public int getIndex() {
 		System.out.println("index - " + index);
 		return index;
 	}
@@ -135,10 +135,16 @@ public class Player extends Sprite2 {
 
 	@Override
 	public void moveToLocation(int newX, int newY) {
-		super.moveToLocation(newX, newY);
-		for (int i = 0; i < attacks.size(); i++) {
-			attacks.get(i).move();
+		if (health == 0) {
+			this.x = Heart.determineXPosition(this, 1);
+			this.y = WorldConstants.HEARTS.Y;
+		} else {
+			super.moveToLocation(newX, newY);
+			for (int i = 0; i < attacks.size(); i++) {
+				attacks.get(i).move();
+			}
 		}
+
 	}
 
 }
