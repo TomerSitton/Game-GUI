@@ -18,7 +18,7 @@ public abstract class WorldConstants {
 	}
 
 	public static interface Players {
-		public static final int STARTING_DISTANCE = 200;
+		public static final int STARTING_DISTANCE = 250;
 	}
 
 	public static interface PHYSICS {
