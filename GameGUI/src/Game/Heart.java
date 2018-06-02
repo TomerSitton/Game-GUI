@@ -14,7 +14,6 @@ public class Heart extends Sprite2 implements Runnable {
 		super(determineXPosition(owner, index), WorldConstants.HEARTS.Y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, 0, 0);
 		this.index = index;
 		this.owner = owner;
-		System.out.println("heart index - " + index);
 		new Thread(this).start();
 	}
 

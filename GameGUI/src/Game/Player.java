@@ -60,7 +60,6 @@ public class Player extends Sprite2 {
 	 * @return the index of the player in the game
 	 */
 	public int getIndex() {
-		System.out.println("index - " + index);
 		return index;
 	}
 
