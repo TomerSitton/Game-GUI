@@ -135,7 +135,7 @@ public class Player extends Sprite2 {
 
 	@Override
 	public void moveToLocation(int newX, int newY) {
-		if (health == 0) {
+		if (health <= 0) {
 			this.x = Heart.determineXPosition(this, 1);
 			this.y = WorldConstants.HEARTS.Y;
 		} else {
