@@ -62,10 +62,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		// initialize other players
 		players = new Player[Integer.parseInt(myPlayer.recieveData())];
 		for (int i = 0; i < players.length; i++) {
-				if (i + 1 == myPlayer.getIndex())
-					players[i] = myPlayer;
-				else
-					players[i] = new Player(i * 100, 200, i+1);
+			if (i + 1 == myPlayer.getIndex())
+				players[i] = myPlayer;
+			else
+				players[i] = new Player(i * 100, 200, i + 1);
 		}
 
 		// initialize the surfaces
@@ -190,7 +190,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			String[] location = values[0].replace("]", "").replace("[", "").split(",");
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
-			if (values[1].equals("F"))
+			if (values[1].equals("F") && players[i].getAttacks().isEmpty())
 				players[i].attack();
 
 		}
