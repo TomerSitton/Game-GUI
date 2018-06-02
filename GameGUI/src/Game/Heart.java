@@ -11,13 +11,15 @@ public class Heart extends Sprite2 implements Runnable {
 	private int index;
 
 	public Heart(Player owner, int index) {
-		super(WorldConstants.HEARTS.X + (owner.getIndex() - 1) * WorldConstants.HEARTS.DISTANCE_GROUPS
-				+ index * WorldConstants.HEARTS.DISTANCE_INDIVIDUALS, WorldConstants.HEARTS.Y, URL, ROWS, COLUMNS,
-				WIDTH, HEIGHT, 0, 0);
+		super(determineXPosition(owner, index), WorldConstants.HEARTS.Y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, 0, 0);
 		this.index = index;
 		this.owner = owner;
-		System.out.println("heart index - " + index);
 		new Thread(this).start();
+	}
+
+	public static int determineXPosition(Player owner, int index) {
+		return WorldConstants.HEARTS.X + (owner.getIndex() - 1) * WorldConstants.HEARTS.DISTANCE_GROUPS
+				+ index * WorldConstants.HEARTS.DISTANCE_INDIVIDUALS;
 	}
 
 	@Override

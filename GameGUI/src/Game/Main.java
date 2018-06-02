@@ -3,9 +3,9 @@ package Game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.ObjectStreamException;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -56,16 +56,20 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	 */
 	private void initComponents() {
 		// initialize my player
-		myPlayer = new Player(100, 200, true);
+		myPlayer = new Player(0, 0, true);
 		this.add(myPlayer);
 
 		// initialize other players
 		players = new Player[Integer.parseInt(myPlayer.recieveData())];
 		for (int i = 0; i < players.length; i++) {
-			if (i + 1 == myPlayer.getIndex())
+			int startingX = getPlayersStartingXPositions()[i];
+			int startingY = WorldConstants.GROUND.Y - WorldConstants.GROUND.HEIGHT - Player.HEIGHT;
+
+			if (i + 1 == myPlayer.getIndex()) {
 				players[i] = myPlayer;
-			else
-				players[i] = new Player(i * 100, 200, i + 1);
+				players[i].moveToLocation(startingX, startingY);
+			} else
+				players[i] = new Player(startingX, startingY, i + 1);
 		}
 
 		// initialize the surfaces
@@ -78,6 +82,39 @@ public class Main extends JPanel implements Runnable, KeyListener {
 				new Heart(player, j);
 			}
 		}
+	}
+
+	private int[] getPlayersStartingXPositions() {
+		int[] locations = new int[players.length];
+		final int LEFT = WorldConstants.GROUND.X;
+		final int MIDDLE = (int) (WorldConstants.GROUND.X + 0.5 * WorldConstants.GROUND.WIDTH);
+		final int RIGHT = WorldConstants.GROUND.X + WorldConstants.GROUND.WIDTH - Player.WIDTH;
+		switch (locations.length) {
+		case 1:
+			System.out.println("1");
+			locations[0] = MIDDLE;
+			break;
+		case 2:
+			System.out.println("2");
+			locations[0] = LEFT;
+			locations[1] = RIGHT;
+			break;
+		case 3:
+			System.out.println("3");
+			locations[0] = LEFT;
+			locations[1] = MIDDLE;
+			locations[2] = RIGHT;
+			break;
+		case 4:
+			System.out.println("4");
+			locations[0] = LEFT;
+			locations[1] = (int) (WorldConstants.GROUND.X + 0.33 * WorldConstants.GROUND.WIDTH);
+			locations[2] = (int) (WorldConstants.GROUND.X + 0.66 * WorldConstants.GROUND.WIDTH);
+			locations[3] = RIGHT;
+		}
+
+		return locations;
+
 	}
 
 	/**
@@ -99,6 +136,12 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
+			// for (Player p : players) {
+			// System.out.println("inedx - " + p.getIndex() + "(" + p.getX() + "," +
+			// p.getY() + ")");
+			// }
+			System.out.println("inedx - " + myPlayer.getIndex() + "(" + myPlayer.getX() + "," + myPlayer.getY() + ")");
+
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
@@ -188,11 +231,11 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			 * and "y"
 			 */
 			String[] location = values[0].replace("]", "").replace("[", "").split(",");
+
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
 			if (values[1].equals("F") && players[i].getAttacks().isEmpty())
 				players[i].attack();
-
 		}
 	}
 
