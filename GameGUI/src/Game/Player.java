@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+
 //TODO - move the communication stuff to Main and move the index variable to there as well
 public class Player extends Sprite2 {
 
@@ -96,7 +98,8 @@ public class Player extends Sprite2 {
 	}
 
 	public void attack() {
-		attacks.add(new FireAttack(this));
+		if (health > 0)
+			attacks.add(new FireAttack(this));
 	}
 
 	public void setAttackingChar(char attackingChar) {

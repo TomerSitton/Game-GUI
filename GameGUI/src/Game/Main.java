@@ -187,11 +187,11 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			 * and "y"
 			 */
 			String[] location = values[0].replace("]", "").replace("[", "").split(",");
+
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
 			if (values[1].equals("F") && players[i].getAttacks().isEmpty())
 				players[i].attack();
-
 		}
 	}
 
