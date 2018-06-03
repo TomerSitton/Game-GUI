@@ -3,23 +3,60 @@ package Game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.lang.model.type.ArrayType;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 // TODO - make a client class that handles commu with server (like the index and number of players etc.)
+/**
+ * This is the main class of the project.</br>
+ * </br>
+ * 
+ * It handles the creation of the frame and the movement and actions of the
+ * characters
+ * 
+ * @author Sitton
+ *
+ */
 public class Main extends JPanel implements Runnable, KeyListener {
+
+	/////////////////// fields /////////////////
+
+	// serial number
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * an {@link ArrayType array} containing all the {@link Player players} in the
+	 * game
+	 */
 	private Player[] players;
+
+	/**
+	 * the local player
+	 */
 	private Player myPlayer;
+
+	/**
+	 * the game's frame
+	 */
 	private JFrame frame;
+
+	/**
+	 * an {@link ArrayType array} containing the {@link Surface surfaces} in the map
+	 */
 	private Surface[] surfaces = new Surface[1];
+
+	// movement-helpers fields
 	private HashMap<String, Boolean> keys = new HashMap<String, Boolean>() {
+		// serial number
+		private static final long serialVersionUID = 1L;
+
 		{
 			put("RIGHT", false);
 			put("LEFT", false);
@@ -27,18 +64,29 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	};
 	private int dx;
 
+	/////////////////// constructors /////////////////
+
+	/**
+	 * This constructs a new {@link Main} by calling the {@link #initFrame()} and
+	 * {@link #initComponents()} methods and starting the main thread {@link #run()}
+	 * 
+	 * @see #initFrame()
+	 * @see #initComponents()
+	 * @see #run()
+	 */
 	public Main() {
 
 		initFrame();
 		initComponents();
-		Thread t = new Thread(this);
-		t.start();
+		new Thread(this).start();
 
 		frame.setVisible(true);
 	}
 
+	/////////////////// initialization methods /////////////////
+
 	/**
-	 * handles the initialization of the JFrame: size, color, keyListener etc.
+	 * Handles the initialization of the JFrame: size, color, keyListener etc.
 	 */
 	private void initFrame() {
 		this.setBounds(10, 10, 1000, 700);
@@ -51,7 +99,42 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * creates the components of the JFrame and adds them to the frame. The
+	 * returns an {@link ArrayType array} containing the starting x locations of the
+	 * players according to the number of players in the game
+	 * 
+	 * @return - an {@link ArrayType array} containing the starting x locations of
+	 *         the players
+	 */
+	private int[] getPlayersStartingXPositions() {
+		int[] locations = new int[players.length];
+		final int LEFT = WorldConstants.GROUND.X;
+		final int MIDDLE = (int) (WorldConstants.GROUND.X + 0.5 * WorldConstants.GROUND.WIDTH);
+		final int RIGHT = WorldConstants.GROUND.X + WorldConstants.GROUND.WIDTH - Player.WIDTH;
+		switch (locations.length) {
+		case 1:
+			locations[0] = MIDDLE;
+			break;
+		case 2:
+			locations[0] = LEFT;
+			locations[1] = RIGHT;
+			break;
+		case 3:
+			locations[0] = LEFT;
+			locations[1] = MIDDLE;
+			locations[2] = RIGHT;
+			break;
+		case 4:
+			locations[0] = LEFT;
+			locations[1] = (int) (WorldConstants.GROUND.X + 0.33 * WorldConstants.GROUND.WIDTH);
+			locations[2] = (int) (WorldConstants.GROUND.X + 0.66 * WorldConstants.GROUND.WIDTH);
+			locations[3] = RIGHT;
+		}
+
+		return locations;
+	}
+
+	/**
+	 * Creates the components of the JFrame and adds them to the frame. The
 	 * components include players, surfaces etc.
 	 */
 	private void initComponents() {
@@ -77,44 +160,12 @@ public class Main extends JPanel implements Runnable, KeyListener {
 				WorldConstants.GROUND.HEIGHT);
 		this.add(surfaces[0]);
 
+		// initialize hearts
 		for (Player player : players) {
 			for (int j = 0; j < player.getHealth(); j++) {
 				new Heart(player, j);
 			}
 		}
-	}
-
-	private int[] getPlayersStartingXPositions() {
-		int[] locations = new int[players.length];
-		final int LEFT = WorldConstants.GROUND.X;
-		final int MIDDLE = (int) (WorldConstants.GROUND.X + 0.5 * WorldConstants.GROUND.WIDTH);
-		final int RIGHT = WorldConstants.GROUND.X + WorldConstants.GROUND.WIDTH - Player.WIDTH;
-		switch (locations.length) {
-		case 1:
-			System.out.println("1");
-			locations[0] = MIDDLE;
-			break;
-		case 2:
-			System.out.println("2");
-			locations[0] = LEFT;
-			locations[1] = RIGHT;
-			break;
-		case 3:
-			System.out.println("3");
-			locations[0] = LEFT;
-			locations[1] = MIDDLE;
-			locations[2] = RIGHT;
-			break;
-		case 4:
-			System.out.println("4");
-			locations[0] = LEFT;
-			locations[1] = (int) (WorldConstants.GROUND.X + 0.33 * WorldConstants.GROUND.WIDTH);
-			locations[2] = (int) (WorldConstants.GROUND.X + 0.66 * WorldConstants.GROUND.WIDTH);
-			locations[3] = RIGHT;
-		}
-
-		return locations;
-
 	}
 
 	/**
@@ -123,25 +174,22 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Sprite2.getExistingSprites().forEach((s) -> s.draw(g));
+		Sprite.getExistingSprites().forEach((s) -> s.draw(g));
 		Arrays.asList(surfaces).forEach(surface -> surface.paint(g));
 	}
 
 	/**
-	 * this is the thread's function handling the cycles of the game. In each run
-	 * the function updates calculates the X and Y values of the player, sends it to
-	 * the server, and then receives the positions of the rest of the players and
-	 * updates them on the frame
+	 * This is the thread's function handling the cycles of the game.</br>
+	 * In each run this method calculates the X and Y values of the player, sends
+	 * them to the server, and then receives the positions of the rest of the
+	 * players and updates them on the frame using the {@link #updateFrame()}
+	 * method.
+	 * 
+	 * @see #updateFrame()
 	 */
 	@Override
 	public void run() {
 		while (true) {
-			// for (Player p : players) {
-			// System.out.println("inedx - " + p.getIndex() + "(" + p.getX() + "," +
-			// p.getY() + ")");
-			// }
-			System.out.println("inedx - " + myPlayer.getIndex() + "(" + myPlayer.getX() + "," + myPlayer.getY() + ")");
-
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
@@ -160,8 +208,19 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * this method handles the keyboard requests. it changes the direction of the
-	 * character accordingly
+	 * This method handles the keyboard requests:</br>
+	 * 1. It sets the {@link #dx} field according to the arrow key pressed (so if
+	 * the left key was pressed dx will be negative, and if the right key was
+	 * pressed it will be positive).</br>
+	 * 2. If the space key has been pressed, it sets the attacking char of the
+	 * {@link Player player} to F.</br>
+	 * 3. If the up key was pressed, it makes the {@link Player player} try to jump
+	 * 
+	 * @param e
+	 *            - the {@link KeyEvent}
+	 * 
+	 * @see Player#setAttackingChar(char)
+	 * @see Player#TryToJump()
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -185,7 +244,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * change the direction back when the released
+	 * This method handles the directions when the key is released
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -208,6 +267,16 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	}
 
+	/**
+	 * This method handles the update of the game's state on the frame.</br>
+	 * It receives the data (location and attacking char) for each player from the
+	 * server, moves the players to the correct locations (using
+	 * {@link Player#moveToLocation(int, int)} and makes the attack if needed (using
+	 * the {@link Player#attack()} method)
+	 * 
+	 * @see Player#moveToLocation(int, int)
+	 * @see Player#attack()
+	 */
 	public void updateFrame() {
 		/*
 		 * Receive data from server - looking like this: "[22,32]_N ~ [100,110]_F ~ \n"
@@ -239,6 +308,11 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		}
 	}
 
+	/**
+	 * the main function. creates a new {@link Main} instance
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new Main();
 	}

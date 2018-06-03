@@ -4,11 +4,49 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
+/**
+ * This class represents a character in the game which has the ability to move.
+ * 
+ * @author Sitton
+ */
 public abstract class MoveableCharacter extends JComponent {
+
+	/////////////////// fields /////////////////
+
+	// serial version
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * The positions of the {@link MoveableCharacter} on the X and Y axes
+	 */
 	protected int x, y;
+
+	/**
+	 * The width and the height of the {@link MoveableCharacter}
+	 */
 	public final int WIDTH, HEIGHT;
-	private boolean isJumping, onTheGround;
+
+	/**
+	 * The speeds of the {@link MoveableCharacter} on the X and Y axes
+	 */
 	protected int speedX, speedY;
+
+	/**
+	 * This is a boolean regarding the current state of the
+	 * {@link MoveableCharacter}:</br>
+	 * isJumping is true when the {@link MoveableCharacter} is in the middle of a
+	 * jump</br>
+	 */
+	private boolean isJumping;
+	/**
+	 * This is a boolean regarding the current state of the
+	 * {@link MoveableCharacter}:</br>
+	 * onTheGround is true when the {@link MoveableCharacter} is standing on an
+	 * instance of a {@link Surface}
+	 */
+	private boolean onTheGround;
+
+	/////////////////// constructors /////////////////
 
 	/**
 	 * constructs a new {@link MoveableCharacter} with the given arguments
@@ -62,7 +100,7 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * sets the absolute speed of the Sprite on the X axis
+	 * sets the absolute speed of the {@link MoveableCharacter} on the X axis
 	 * 
 	 * @param speedX
 	 *            The speed on the X Axis
@@ -72,7 +110,7 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * sets the absolute speed of the Sprite on the Y axis
+	 * sets the absolute speed of the {@link MoveableCharacter} on the Y axis
 	 * 
 	 * @param speedY
 	 *            The speed on the Y Axis
@@ -84,6 +122,8 @@ public abstract class MoveableCharacter extends JComponent {
 	/////////////////// getters /////////////////
 
 	/**
+	 * returns the location of the {@link MoveableCharacter} on the x axis
+	 * 
 	 * @return the location of the {@link MoveableCharacter} on the x axis
 	 */
 	public int getX() {
@@ -91,6 +131,8 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
+	 * returns the location of the {@link MoveableCharacter} on the y axis
+	 * 
 	 * @return the location of the {@link MoveableCharacter} on the y axis
 	 */
 	public int getY() {
@@ -116,6 +158,8 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
+	 * returns the width of the {@link MoveableCharacter}
+	 * 
 	 * @return the width of the {@link MoveableCharacter}
 	 */
 	public int getWidth() {
@@ -123,6 +167,8 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
+	 * returns the height of the {@link MoveableCharacter}
+	 * 
 	 * @return the height of the {@link MoveableCharacter}
 	 */
 	public int getHeight() {
@@ -132,14 +178,12 @@ public abstract class MoveableCharacter extends JComponent {
 	/////////////////// other methods /////////////////
 
 	/**
-	 * this method moves the {@link MoveableCharacter} to the target x,y position
-	 * and updates its {@link DirectionEnum} accordingly
+	 * This method moves the {@link MoveableCharacter} to the target (x,y) position.
 	 * 
 	 * @param newX
 	 *            - the desired x location to the {@link MoveableCharacter} to be at
 	 * @param newY
 	 *            - the desired y location to the {@link MoveableCharacter} to be at
-	 * @see DirectionEnum
 	 */
 	public void moveToLocation(int newX, int newY) {
 		this.x = newX;
@@ -147,8 +191,18 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * this method changes the Y direction of the {@link MoveableCharacter} to be UP
-	 * (thus making it move up) for a short time, and then stops
+	 * This method changes the {@link #isJumping} field to be true for a short time,
+	 * thus making the {@link #getCurrentYSpeed(Surface[])} method return the
+	 * jumping speed of the {@link MoveableCharacter}, which makes it move upwards
+	 * for that short amount of time.</br>
+	 * </br>
+	 * 
+	 * note - if the {@link MoveableCharacter} is already in the middle of a jump or
+	 * is not standing on a {@link Surface}, this method will do nothing.
+	 * 
+	 * @see #isJumping
+	 * @see #onTheGround
+	 * @see #getCurrentYSpeed(Surface[])
 	 */
 	public void TryToJump() {
 		if (isJumping || !onTheGround) {
@@ -172,13 +226,25 @@ public abstract class MoveableCharacter extends JComponent {
 	}
 
 	/**
-	 * this method makes the character move downwards if it is not standing on a
+	 * This method makes the character move downwards if it is not standing on a
 	 * {@link Surface} or if it is not in the middle of a jump
+	 * 
+	 * 
+	 * This method determines the current Y speed of the
+	 * {@link MoveableCharacter}.</br>
+	 * </br>
+	 * 
+	 * If it's trying to jump this method will return the {@link #speedY}
+	 * field.</br>
+	 * If it's standing on a surface this method will return 0.</br>
+	 * If it's not jumping and not standing on the ground, this method will return
+	 * {@link WorldConstants.PHYSICS#FALLING_SPEED the constant falling speed.}
 	 * 
 	 * @param surfaces
 	 *            - the surfaces in the JFrame.
 	 * 
 	 * @see Surface
+	 * @see WorldConstants.PHYSICS#FALLING_SPEED
 	 */
 	public int getCurrentYSpeed(Surface[] surfaces) {
 		// the character is in a middle of a jump.
@@ -203,6 +269,16 @@ public abstract class MoveableCharacter extends JComponent {
 		return WorldConstants.PHYSICS.FALLING_SPEED;
 	}
 
+	/**
+	 * This method determines if the instance of the {@link MoveableCharacter} is
+	 * touching the {@link MoveableCharacter} given as an argument
+	 * 
+	 * @param otherCharacter
+	 *            - the {@link MoveableCharacter} to check if touching the instance
+	 *            of the {@link MoveableCharacter}
+	 * @return true if the two {@link MoveableCharacter}s are touching. false if
+	 *         not.
+	 */
 	public boolean isTouching(MoveableCharacter otherCharacter) {
 		if (x + WIDTH >= otherCharacter.x && x <= otherCharacter.x + otherCharacter.WIDTH)
 			if (y + HEIGHT >= otherCharacter.y && y <= otherCharacter.getY() + otherCharacter.HEIGHT)

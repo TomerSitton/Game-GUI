@@ -8,15 +8,45 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 //TODO - move the communication stuff to Main and move the index variable to there as well
-public class Player extends Sprite2 {
+/**
+ * This class represents a player in the game.</br>
+ * </br>
+ * It handles its connection and communication to the server, its movement, its
+ * state (such as the amount of health left) and its actions (such as attacking
+ * the other characters)
+ * 
+ * @author Sitton
+ */
+public class Player extends Sprite {
 
-	// client's socket and I/O streams
+	/////////////////// fields /////////////////
+
+	// serial version
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * the client's socket
+	 */
 	private Socket socket;
+
+	/**
+	 * the client's input stream
+	 */
 	private BufferedReader inputStreamFromServer;
+
+	/**
+	 * the client's output stream
+	 */
 	private DataOutputStream outputStreamToServer;
 
+	/**
+	 * the index of the player (received by the server)
+	 */
 	private int index = -1;
 
+	/**
+	 * The constants of the player
+	 */
 	public static final String URL = "img/player1-2.0.png";
 	public static final int ROWS = 4;
 	public static final int COLUMNS = 8;
@@ -24,10 +54,39 @@ public class Player extends Sprite2 {
 	public static final int HEIGHT = 150;
 	public static final int SPEED_X = 25;
 	public static final int SPEED_Y = 20;
+	/**
+	 * the health of the player
+	 */
 	private int health;
+
+	// TODO - make this enum..?
+	/**
+	 * the attacking char of the player:</br>
+	 * N - not attacking</br>
+	 * F - attacking
+	 */
 	private char attackingChar = 'N';
+
+	/**
+	 * an {@link ArrayList} containing the attacks of the {@link Player}.
+	 * 
+	 * @see FireAttack
+	 */
 	private ArrayList<FireAttack> attacks = new ArrayList<>();
 
+	/////////////////// constructors /////////////////
+
+	/**
+	 * This constructs a new {@link Player} with the given arguments
+	 * 
+	 * @param x
+	 *            - the starting x position of the {@link Player}
+	 * @param y
+	 *            - the starting Y position of the {@link Player}
+	 * @param isMyPlayer
+	 *            - true if the player is the local player (so a connetion to the
+	 *            server needs to be set up)
+	 */
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
 		health = 3;
@@ -35,10 +94,41 @@ public class Player extends Sprite2 {
 			initSocketStreams();
 	}
 
+	/**
+	 * This constructs a new {@link Player} with the given arguments
+	 * 
+	 * @param x
+	 *            - the starting x position of the {@link Player}
+	 * @param y
+	 *            - the starting Y position of the {@link Player}
+	 * @param index
+	 *            - the index of the {@link Player}
+	 */
 	public Player(int x, int y, int index) {
 		this(x, y, false);
 		this.index = index;
 	}
+
+	/////////////////// getters /////////////////
+	/**
+	 * returns the health of the {@link Player}
+	 * 
+	 * @return the health of the {@link Player}
+	 */
+	public int getHealth() {
+		return health;
+	}
+
+	/**
+	 * returns the attacks of the player
+	 * 
+	 * @return the attacks of the player
+	 */
+	public ArrayList<FireAttack> getAttacks() {
+		return attacks;
+	}
+
+	/////////////////// other methods /////////////////
 
 	/**
 	 * initialize the client's sockets and I/O streams
@@ -56,6 +146,7 @@ public class Player extends Sprite2 {
 	}
 
 	/**
+	 * returns the index of the player in the game
 	 * 
 	 * @return the index of the player in the game
 	 */
@@ -67,11 +158,12 @@ public class Player extends Sprite2 {
 	 * send data to the server. </br>
 	 * In the game, the data sent to the the server is represented like this: </br>
 	 * </br>
-	 * "(newX,newY)\n" </br>
+	 * "[newX,newY]_attackingChar\n" </br>
 	 * </br>
-	 * so if for example my character moved from (0,0) to (10,12), the data to be
-	 * sent to the server will look like this:</br>
-	 * "(10,12)\n"
+	 * So if for example my character moved from (0,0) to (10,12),and did not make
+	 * an attempt to attack, the data to be sent to the server will look like
+	 * this:</br>
+	 * "[10,12]_N\n"
 	 * 
 	 */
 	public void sendData(int newX, int newY) {
@@ -83,10 +175,16 @@ public class Player extends Sprite2 {
 
 	/**
 	 * Receive data from the server.</br>
-	 * The data should look like this: "(newX1,newY1) : (newX2,newY2) :
-	 * (newX3,newY3) : (newX4,newY4)\n" </br>
+	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk ~
+	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" </br>
 	 * </br>
-	 * These numbers represent the locations of the 4 players at the given time
+	 * 
+	 * These numbers represent the locations of the 4 players at the given time, and
+	 * the "attk" represents the {@link #attackingChar}s field of the players.</br>
+	 * </br>
+	 * 
+	 * An example input for 4 players could look like this:</br>
+	 * [100,350]_N ~ [529,350]_F ~ [958,350]_N ~ [1290,350]_N ~\n
 	 * 
 	 * @return - a string representing the locations of all players
 	 */
@@ -94,15 +192,33 @@ public class Player extends Sprite2 {
 		return Network.recieveDataFromServer(this.inputStreamFromServer);
 	}
 
+	/**
+	 * Add a {@link FireAttack} to the {@link #attacks} fields
+	 * 
+	 * @see FireAttack
+	 */
 	public void attack() {
 		if (health > 0)
 			attacks.add(new FireAttack(this));
 	}
 
+	/**
+	 * set the {@link #attackingChar}
+	 * 
+	 * @param attackingChar
+	 *            - the new {@link #attackingChar}
+	 */
 	public void setAttackingChar(char attackingChar) {
 		this.attackingChar = attackingChar;
 	}
 
+	/**
+	 * Reduce the value of {@link #health} by 1 and set the
+	 * {@link Sprite#costumeConst costume constant} to 2 for a short time in order
+	 * to use the correct type of costume
+	 * 
+	 * @see Sprite#costumeConst
+	 */
 	public void looseHealth() {
 		if (costumeConst != 0)
 			return;
@@ -120,19 +236,17 @@ public class Player extends Sprite2 {
 				costumeConst = 0;
 			}
 		}).start();
-
-		System.out.println("player " + getIndex() + " got hit");
-
 	}
 
-	public int getHealth() {
-		return health;
-	}
-
-	public ArrayList<FireAttack> getAttacks() {
-		return attacks;
-	}
-
+	/**
+	 * {@inheritDoc}</br>
+	 * </br>
+	 * 
+	 * In addition to that, this method moves the attacks of the {@link Player}
+	 * 
+	 * note - in case the {@link #getHealth() player's health} is 0, this method
+	 * will move him to his death position
+	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
 		if (health <= 0) {
