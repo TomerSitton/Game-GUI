@@ -66,7 +66,7 @@ public abstract class Sprite extends MoveableCharacter {
 	// TODO - use enum instead...?
 	/**
 	 * The costume constant of the {@link Sprite}.</br>
-	 * The images of the sprite are devided to rows and columns. Each two rows
+	 * The images of the sprite are divided to rows and columns. Each two rows
 	 * represents the same type of image, but looking to the other direction.
 	 * Therefore, the costumeConst determines which type of the sprite images needs
 	 * to be used: </br>
