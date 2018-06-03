@@ -91,22 +91,18 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		final int RIGHT = WorldConstants.GROUND.X + WorldConstants.GROUND.WIDTH - Player.WIDTH;
 		switch (locations.length) {
 		case 1:
-			System.out.println("1");
 			locations[0] = MIDDLE;
 			break;
 		case 2:
-			System.out.println("2");
 			locations[0] = LEFT;
 			locations[1] = RIGHT;
 			break;
 		case 3:
-			System.out.println("3");
 			locations[0] = LEFT;
 			locations[1] = MIDDLE;
 			locations[2] = RIGHT;
 			break;
 		case 4:
-			System.out.println("4");
 			locations[0] = LEFT;
 			locations[1] = (int) (WorldConstants.GROUND.X + 0.33 * WorldConstants.GROUND.WIDTH);
 			locations[2] = (int) (WorldConstants.GROUND.X + 0.66 * WorldConstants.GROUND.WIDTH);
@@ -136,12 +132,6 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
-			// for (Player p : players) {
-			// System.out.println("inedx - " + p.getIndex() + "(" + p.getX() + "," +
-			// p.getY() + ")");
-			// }
-			System.out.println("inedx - " + myPlayer.getIndex() + "(" + myPlayer.getX() + "," + myPlayer.getY() + ")");
-
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
