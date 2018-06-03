@@ -123,7 +123,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Sprite2.getExistingSprites().forEach((s) -> s.draw(g));
+		Sprite.getExistingSprites().forEach((s) -> s.draw(g));
 		Arrays.asList(surfaces).forEach(surface -> surface.paint(g));
 	}
 

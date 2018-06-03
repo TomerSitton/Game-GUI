@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public abstract class Sprite2 extends MoveableCharacter {
+public abstract class Sprite extends MoveableCharacter {
+	// serial number
+	private static final long serialVersionUID = 1L;
 	/**
 	 * a double dimensional array representing the different states of the sprite
 	 */
@@ -19,7 +21,7 @@ public abstract class Sprite2 extends MoveableCharacter {
 	public BufferedImage bufferedImage;
 	/**
 	 * the number of rows and columns in the original sprite image (i.e the number
-	 * of rows and columns in the {@link Sprite2#COSTUMES} variable
+	 * of rows and columns in the {@link Sprite#COSTUMES} variable
 	 */
 	private final int ROWS, COLUMNS;
 	/**
@@ -28,7 +30,7 @@ public abstract class Sprite2 extends MoveableCharacter {
 	private int SUB_IMG_WIDTH, SUB_IMG_HEIGHT;
 	/**
 	 * the current row/column, representing the current costume, in the
-	 * {@link Sprite2#COSTUMES} variable
+	 * {@link Sprite#COSTUMES} variable
 	 */
 	protected int currentRow = 0, currentColumn = 0;
 
@@ -36,17 +38,17 @@ public abstract class Sprite2 extends MoveableCharacter {
 	/**
 	 * and {@link ArrayList} representing the all the existing sprites
 	 */
-	private final static ArrayList<Sprite2> existingSprites = new ArrayList<>();
+	private final static ArrayList<Sprite> existingSprites = new ArrayList<>();
 
 	protected int costumeConst = 0;
 
 	/**
-	 * this constructs a new {@link Sprite2} with the given parameters
+	 * this constructs a new {@link Sprite} with the given parameters
 	 * 
 	 * @param x
-	 *            - the starting location of the {@link Sprite2} on the x axis
+	 *            - the starting location of the {@link Sprite} on the x axis
 	 * @param y
-	 *            - the starting location of the {@link Sprite2} on the y axis
+	 *            - the starting location of the {@link Sprite} on the y axis
 	 * @param url
 	 *            - the url location of the image of the sprite
 	 * @param rows
@@ -54,15 +56,15 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 * @param columns
 	 *            - the number of rows in the sprite image
 	 * @param wantedWidth
-	 *            - the desired width of the {@link Sprite2}
+	 *            - the desired width of the {@link Sprite}
 	 * @param wantedHeight
-	 *            - the desired height of the {@link Sprite2}
+	 *            - the desired height of the {@link Sprite}
 	 * @param speedX
-	 *            - the speed of the {@link Sprite2} on the x axis
+	 *            - the speed of the {@link Sprite} on the x axis
 	 * @param speedY
-	 *            - the speed of the {@link Sprite2} on the y axis
+	 *            - the speed of the {@link Sprite} on the y axis
 	 */
-	public Sprite2(int x, int y, String url, int rows, int columns, int wantedWidth, int wantedHeight, int speedX,
+	public Sprite(int x, int y, String url, int rows, int columns, int wantedWidth, int wantedHeight, int speedX,
 			int speedY) {
 		super(x, y, wantedWidth, wantedHeight, speedX, speedY);
 		existingSprites.add(this);
@@ -73,10 +75,10 @@ public abstract class Sprite2 extends MoveableCharacter {
 	}
 
 	/**
-	 * this constructs a new {@link Sprite2} with the given parameters
+	 * this constructs a new {@link Sprite} with the given parameters
 	 * 
 	 * @param location
-	 *            - the starting location of the {@link Sprite2} 
+	 *            - the starting location of the {@link Sprite}
 	 * @param url
 	 *            - the url location of the image of the sprite
 	 * @param rows
@@ -84,17 +86,18 @@ public abstract class Sprite2 extends MoveableCharacter {
 	 * @param columns
 	 *            - the number of rows in the sprite image
 	 * @param wantedWidth
-	 *            - the desired width of the {@link Sprite2}
+	 *            - the desired width of the {@link Sprite}
 	 * @param wantedHeight
-	 *            - the desired height of the {@link Sprite2}
+	 *            - the desired height of the {@link Sprite}
 	 * @param speedX
-	 *            - the speed of the {@link Sprite2} on the x axis
+	 *            - the speed of the {@link Sprite} on the x axis
 	 * @param speedY
-	 *            - the speed of the {@link Sprite2} on the y axis
+	 *            - the speed of the {@link Sprite} on the y axis
 	 */
-	public Sprite2(Point location, String url, int rows, int columns, int wantedWidth, int wantedHeight, int speedX,
+	public Sprite(Point location, String url, int rows, int columns, int wantedWidth, int wantedHeight, int speedX,
 			int speedY) {
-		this((int) location.getX(), (int) location.getY(), url, rows, columns, wantedWidth, wantedHeight, speedX, speedY);
+		this((int) location.getX(), (int) location.getY(), url, rows, columns, wantedWidth, wantedHeight, speedX,
+				speedY);
 	}
 
 	/**
@@ -169,7 +172,7 @@ public abstract class Sprite2 extends MoveableCharacter {
 	}
 
 	/**
-	 * this method draws the {@link Sprite2} using its current row and column, and
+	 * this method draws the {@link Sprite} using its current row and column, and
 	 * its current x and y values
 	 */
 	@Override
@@ -179,22 +182,22 @@ public abstract class Sprite2 extends MoveableCharacter {
 
 	/**
 	 * 
-	 * @return the number of existing {@link Sprite2} instances
+	 * @return the number of existing {@link Sprite} instances
 	 */
-	public static ArrayList<Sprite2> getExistingSprites() {
+	public static ArrayList<Sprite> getExistingSprites() {
 		return existingSprites;
 	}
 
 	/**
-	 * returns an {@link ArrayList} containing all the {@link Sprite2}s that are
+	 * returns an {@link ArrayList} containing all the {@link Sprite}s that are
 	 * currently touching the sprite this method ran on
 	 * 
-	 * @return - an {@link ArrayList} containing all the {@link Sprite2}s touching
-	 *         my sprite
+	 * @return - an {@link ArrayList} containing all the {@link Sprite}s touching my
+	 *         sprite
 	 */
-	public ArrayList<Sprite2> spritesTouching() {
-		ArrayList<Sprite2> touching = new ArrayList<>();
-		for (Sprite2 sprite : existingSprites) {
+	public ArrayList<Sprite> spritesTouching() {
+		ArrayList<Sprite> touching = new ArrayList<>();
+		for (Sprite sprite : existingSprites) {
 			if (this.isTouching(sprite) && sprite != this) {
 				touching.add(sprite);
 			}
@@ -205,7 +208,7 @@ public abstract class Sprite2 extends MoveableCharacter {
 	/**
 	 * removes a sprite form the existingSprites {@link ArrayList}
 	 * 
-	 * @see Sprite2#getExistingSprites()
+	 * @see Sprite#getExistingSprites()
 	 */
 	public void removeSprite() {
 		existingSprites.remove(this);

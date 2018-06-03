@@ -1,6 +1,6 @@
 package Game;
 
-public class FireAttack extends Sprite2 implements Flying {
+public class FireAttack extends Sprite implements Flying {
 
 	public static final String URL = "img/fireAttack.png";
 	public static final int ROWS = 2;
@@ -27,7 +27,7 @@ public class FireAttack extends Sprite2 implements Flying {
 			else
 				x = x - speedX;
 			// check hit
-			for (Sprite2 sprite : this.spritesTouching()) {
+			for (Sprite sprite : this.spritesTouching()) {
 				if (sprite instanceof Player && sprite != this.shootingPlayer) {
 					((Player) sprite).looseHealth();
 					removeSprite();

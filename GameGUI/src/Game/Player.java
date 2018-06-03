@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 //TODO - move the communication stuff to Main and move the index variable to there as well
-public class Player extends Sprite2 {
+public class Player extends Sprite {
 
 	// client's socket and I/O streams
 	private Socket socket;

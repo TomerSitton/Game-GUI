@@ -1,6 +1,6 @@
 package Game;
 
-public class Heart extends Sprite2 implements Runnable {
+public class Heart extends Sprite implements Runnable {
 
 	public static final String URL = "img/heart2.png";
 	public static final int ROWS = 2;
