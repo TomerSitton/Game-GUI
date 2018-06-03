@@ -5,27 +5,37 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * This is an interface which contains basic method to be used for player to
- * send data to the server and receive data from it
+ * This is an interface with basic methods to be used for players to send data
+ * to the server and receive data from it
  */
 public interface Network {
 	// server's address constants
+	/**
+	 * The IP address of the server
+	 */
 	public static final String SERVER_IP = "10.0.0.8";
+	/**
+	 * The port on which the server runs
+	 */
 	public static final int SERVER_PORT = 2212;
 
 	/**
 	 * send data to the server. </br>
-	 * In the game, the data sent to the the server is represented like this:
+	 * In the game, the data sent to the the server is represented like this: </br>
 	 * </br>
+	 * "[newX,newY]_attackingChar\n" </br>
 	 * </br>
-	 * "(newX,newY)\n" </br>
-	 * </br>
-	 * so if for example my character moved from (0,0) to (10,12), the data to
-	 * be sent to the server will look like this:</br>
-	 * "(10,12)\n"
+	 * So if for example my character moved from (0,0) to (10,12), and did not make
+	 * an attempt to attack, the data to be sent to the server will look like
+	 * this:</br>
+	 * "[10,12]_N\n"
 	 * 
+	 *
 	 * @param data
 	 *            - the data to be sent to the server
+	 * @see Player#setAttackingChar(char)
+	 *
+	 *
 	 */
 	public static void sendDataToServer(DataOutputStream outputStreamToServer, String data) {
 		try {
@@ -38,10 +48,16 @@ public interface Network {
 
 	/**
 	 * Receive data from the server.</br>
-	 * The data should look like this:</br>
-	 * "(newX1,newY1) : (newX2,newY2) : (newX3,newY3) : (newX4,newY4)\n" </br>
+	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk ~
+	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" </br>
 	 * </br>
-	 * These numbers represent the locations of the 4 players at the given time
+	 * 
+	 * These numbers represent the locations of the 4 players at the given time, and
+	 * the "attk" represents the {@link #attackingChar}s field of the players.</br>
+	 * </br>
+	 * 
+	 * An example input for 4 players could look like this:</br>
+	 * [100,350]_N ~ [529,350]_F ~ [958,350]_N ~ [1290,350]_N ~\n
 	 * 
 	 * @return - a string representing the locations of all players
 	 */

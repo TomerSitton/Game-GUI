@@ -160,7 +160,7 @@ public class Player extends Sprite {
 	 * </br>
 	 * "[newX,newY]_attackingChar\n" </br>
 	 * </br>
-	 * So if for example my character moved from (0,0) to (10,12),and did not made
+	 * So if for example my character moved from (0,0) to (10,12),and did not make
 	 * an attempt to attack, the data to be sent to the server will look like
 	 * this:</br>
 	 * "[10,12]_N\n"
