@@ -8,42 +8,79 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+/**
+ * This class represents a <a href=
+ * "https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-spritesheet-animation--gamedev-13099"
+ * >sprite animation</a> character.</br>
+ * 
+ * It handles the changing of the {@link Sprite}'s costumes.
+ * 
+ * @author Sitton
+ */
 public abstract class Sprite extends MoveableCharacter {
+
+	/////////////////// fields /////////////////
+
 	// serial number
 	private static final long serialVersionUID = 1L;
+
 	/**
-	 * a double dimensional array representing the different states of the sprite
+	 * A double dimensional array representing the different states (images) of the
+	 * sprite
 	 */
 	private Image[][] COSTUMES;
+
 	/**
-	 * the original image of the sprite
+	 * The original image of the sprite
 	 */
-	public BufferedImage bufferedImage;
+	private BufferedImage bufferedImage;
+
 	/**
-	 * the number of rows and columns in the original sprite image (i.e the number
-	 * of rows and columns in the {@link Sprite#COSTUMES} variable
+	 * The number of rows and columns in the original sprite image (i.e the number
+	 * of rows and columns in the {@link #COSTUMES} field
 	 */
 	private final int ROWS, COLUMNS;
+
 	/**
-	 * the height and width of the costumes of the sprite
+	 * The height and width of the costumes of the sprite
 	 */
 	private int SUB_IMG_WIDTH, SUB_IMG_HEIGHT;
+
 	/**
-	 * the current row/column, representing the current costume, in the
-	 * {@link Sprite#COSTUMES} variable
+	 * The current row/column, representing the current costume, in the
+	 * {@link #COSTUMES} field
 	 */
 	protected int currentRow = 0, currentColumn = 0;
 
-	private boolean isLookingRight = true;
 	/**
-	 * and {@link ArrayList} representing the all the existing sprites
+	 * A boolean determines the side the {@link Sprite} is looking at (in order to
+	 * set the correct {@link #currentRow})
+	 */
+	private boolean isLookingRight = true;
+
+	/**
+	 * An {@link ArrayList} containing all the existing {@link Sprite} instances
 	 */
 	private final static ArrayList<Sprite> existingSprites = new ArrayList<>();
 
+	// TODO - use enum instead...?
+	/**
+	 * The costume constant of the {@link Sprite}.</br>
+	 * The images of the sprite are devided to rows and columns. Each two rows
+	 * represents the same type of image, but looking to the other direction.
+	 * Therefore, the costumeConst determines which type of the sprite images needs
+	 * to be used: </br>
+	 * 0 - first&second rows</br>
+	 * 2 - third&fourth rows</br>
+	 * 4 - fifth&sixth rows</br>
+	 * etc...
+	 */
 	protected int costumeConst = 0;
 
+	/////////////////// constructors /////////////////
+
 	/**
-	 * this constructs a new {@link Sprite} with the given parameters
+	 * This constructs a new {@link Sprite} with the given parameters
 	 * 
 	 * @param x
 	 *            - the starting location of the {@link Sprite} on the x axis
@@ -75,7 +112,7 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * this constructs a new {@link Sprite} with the given parameters
+	 * This constructs a new {@link Sprite} with the given parameters
 	 * 
 	 * @param location
 	 *            - the starting location of the {@link Sprite}
@@ -100,12 +137,15 @@ public abstract class Sprite extends MoveableCharacter {
 				speedY);
 	}
 
+	/////////////////// other methods /////////////////
+
 	/**
-	 * this method cuts the sprite image in the right places (by rows and columns)
-	 * and saves it in a double dimensional array named COSTUMES which represent the
-	 * individual images of the character.
+	 * This method cuts the sprite image in the right places (by rows and columns)
+	 * and saves it in the {@link #COSTUMES} field which represent the individual
+	 * images of the character.
 	 * 
 	 * @param imageIcon
+	 *            - the original sprite image
 	 */
 	private void handlePictures(ImageIcon imageIcon) {
 		int currentX = 0, currentY = 0;
@@ -132,9 +172,11 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * this method calls the {@link MoveableCharacter#moveToLocation(newX, newY)}
-	 * method, and also and also changes the sprite's its column and row values in
-	 * order to fit the correct image in the COSTUMES images array
+	 * This method calls the {@link MoveableCharacter#moveToLocation(newX, newY)}
+	 * method, and also updates the {@link #currentColumn} and {@link #currentRow}
+	 * fields of the {@link Sprite} in order to fit to the correct costume of the
+	 * movement.
+	 * 
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
@@ -154,7 +196,7 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * this method returns the next column of the sprite image (if the current
+	 * This method returns the next column of the sprite image (if the current
 	 * column is the last column in the image, than it will return the first column)
 	 * 
 	 * @return - the column after the current column in the sprite's image
@@ -167,13 +209,19 @@ public abstract class Sprite extends MoveableCharacter {
 		return currentColumn;
 	}
 
+	/**
+	 * 
+	 * @return the {@link #isLookingRight} field's value - true if looking right and
+	 *         false if not
+	 */
 	public boolean isLookingRight() {
 		return isLookingRight;
 	}
 
 	/**
-	 * this method draws the {@link Sprite} using its current row and column, and
-	 * its current x and y values
+	 * This method draws the {@link Sprite} using its {@link #currentRow} and
+	 * {@link #currentColumn} fields, and its current {@link MoveableCharacter#x x
+	 * and y position} values
 	 */
 	@Override
 	public void draw(Graphics g) {
@@ -181,16 +229,15 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * 
-	 * @return the number of existing {@link Sprite} instances
+	 * @return The number of existing {@link Sprite} instances
 	 */
 	public static ArrayList<Sprite> getExistingSprites() {
 		return existingSprites;
 	}
 
 	/**
-	 * returns an {@link ArrayList} containing all the {@link Sprite}s that are
-	 * currently touching the sprite this method ran on
+	 * returns an {@link ArrayList} containing all the {@link Sprite} instances that
+	 * are currently touching the {@link Sprite} this method ran on
 	 * 
 	 * @return - an {@link ArrayList} containing all the {@link Sprite}s touching my
 	 *         sprite
@@ -206,9 +253,9 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * removes a sprite form the existingSprites {@link ArrayList}
+	 * Removes a sprite form the {@link #existingSprites} {@link ArrayList}
 	 * 
-	 * @see Sprite#getExistingSprites()
+	 * @see #getExistingSprites()
 	 */
 	public void removeSprite() {
 		existingSprites.remove(this);
