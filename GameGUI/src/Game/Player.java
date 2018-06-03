@@ -171,7 +171,7 @@ public class Player extends Sprite {
 	 *            - the new y coordinate of the player.
 	 *            
 	 */
-	public void sendData(int newX, int newY) {
+	public void sendLocationData(int newX, int newY) {
 		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
