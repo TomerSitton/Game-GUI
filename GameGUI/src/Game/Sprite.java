@@ -172,11 +172,13 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * This method calls the {@link MoveableCharacter#moveToLocation(newX, newY)}
-	 * method, and also updates the {@link #currentColumn} and {@link #currentRow}
+	 * {@inheritDoc}</br>
+	 * </br>
+	 * In addition, it updates the {@link #currentColumn} and {@link #currentRow}
 	 * fields of the {@link Sprite} in order to fit to the correct costume of the
 	 * movement.
 	 * 
+	 * @see #COSTUMES
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {

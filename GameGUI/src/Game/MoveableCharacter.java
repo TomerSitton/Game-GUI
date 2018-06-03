@@ -178,7 +178,7 @@ public abstract class MoveableCharacter extends JComponent {
 	/////////////////// other methods /////////////////
 
 	/**
-	 * This method moves the {@link MoveableCharacter} to the target (x,y) position
+	 * This method moves the {@link MoveableCharacter} to the target (x,y) position.
 	 * 
 	 * @param newX
 	 *            - the desired x location to the {@link MoveableCharacter} to be at
