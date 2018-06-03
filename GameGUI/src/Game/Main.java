@@ -7,9 +7,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import javax.lang.model.type.ArrayType;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
@@ -189,12 +191,24 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	 */
 	@Override
 	public void run() {
-		while (true) {
+		Supplier<Integer> livingPlayers = new Supplier<Integer>() {
+			@Override
+			public Integer get() {
+				int sum = 0;
+				for (Player p : players)
+					if (p.getHealth() > 0)
+						sum++;
+				return sum;
+			}
+		};
+
+		// update locations as long as there are more than one player alive
+		while (livingPlayers.get() > 1) {
 			// calculate the new positions
 			int newX = myPlayer.getX() + dx;
 			int newY = myPlayer.getY() + myPlayer.getCurrentYSpeed(surfaces);
 			// send player's state to the server
-			myPlayer.sendData(newX, newY);
+			myPlayer.sendLocationData(newX, newY);
 			// receive states of all the players and update the frame
 			updateFrame();
 			repaint();
@@ -205,6 +219,22 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			}
 
 		}
+
+		// tell the server the game is over
+		myPlayer.sendString("finished!");
+
+		repaint();
+
+		// tell the server that my player has won if that's true
+		if (myPlayer.getHealth() > 0)
+			myPlayer.sendString("player " + myPlayer.getIndex() + " win");
+
+		String winningPlayerIndex = myPlayer.recieveData();
+		while (winningPlayerIndex.length() > 1)
+			winningPlayerIndex = myPlayer.recieveData();
+
+		JOptionPane.showMessageDialog(this.frame, "THE WINNER IS PLAYER NUMBER " + winningPlayerIndex);
+		System.exit(0);
 	}
 
 	/**

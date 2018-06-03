@@ -169,13 +169,24 @@ public class Player extends Sprite {
 	 *            - the new x coordinate of the player.
 	 * @param newY
 	 *            - the new y coordinate of the player.
-	 *            
+	 * 
 	 */
-	public void sendData(int newX, int newY) {
+	public void sendLocationData(int newX, int newY) {
 		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
 			attackingChar = 'N';
+	}
+
+	/**
+	 * This method sends a string to the server using the
+	 * {@link Network#sendDataToServer(DataOutputStream, String)} method
+	 * 
+	 * @param msg
+	 *            - the message to send to the server
+	 */
+	public void sendString(String msg) {
+		Network.sendDataToServer(this.outputStreamToServer, msg);
 	}
 
 	/**
@@ -254,14 +265,15 @@ public class Player extends Sprite {
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
+		for (int i = 0; i < attacks.size(); i++) {
+			attacks.get(i).move();
+		}
+
 		if (health <= 0) {
 			this.x = Heart.determineXPosition(this, 1);
 			this.y = WorldConstants.HEARTS.Y;
 		} else {
 			super.moveToLocation(newX, newY);
-		}
-		for (int i = 0; i < attacks.size(); i++) {
-			attacks.get(i).move();
 		}
 
 	}
