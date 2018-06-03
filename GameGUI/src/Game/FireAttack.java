@@ -82,7 +82,6 @@ public class FireAttack extends Sprite implements Flying {
 			for (Sprite sprite : this.spritesTouching()) {
 				if (sprite instanceof Player && sprite != this.shootingPlayer) {
 					((Player) sprite).looseHealth();
-					System.out.println("loose health");
 					removeSprite();
 				}
 			}

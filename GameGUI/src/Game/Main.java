@@ -14,8 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.omg.Messaging.SyncScopeHelper;
-
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 // TODO - make a client class that handles commu with server (like the index and number of players etc.)
 /**
