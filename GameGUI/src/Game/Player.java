@@ -265,14 +265,15 @@ public class Player extends Sprite {
 	 */
 	@Override
 	public void moveToLocation(int newX, int newY) {
+		for (int i = 0; i < attacks.size(); i++) {
+			attacks.get(i).move();
+		}
+
 		if (health <= 0) {
 			this.x = Heart.determineXPosition(this, 1);
 			this.y = WorldConstants.HEARTS.Y;
 		} else {
 			super.moveToLocation(newX, newY);
-		}
-		for (int i = 0; i < attacks.size(); i++) {
-			attacks.get(i).move();
 		}
 
 	}

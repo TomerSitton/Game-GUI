@@ -73,8 +73,9 @@ public class Heart extends Sprite implements Runnable {
 		while (owner.getHealth() >= 0) {
 			int currentHealth = owner.getHealth();
 			if (currentHealth < prevHealth) {
-				if (index + 1 == prevHealth)
+				if (index + 1 == prevHealth) {
 					removeSprite();
+				}
 			}
 			prevHealth = currentHealth;
 			try {
