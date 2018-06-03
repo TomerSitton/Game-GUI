@@ -333,7 +333,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
-			if (values[1].equals("F") && players[i].getAttacks().isEmpty())
+			if (values[1].equals("F") && players[i].getAttacks().size() < 3)
 				players[i].attack();
 		}
 	}
