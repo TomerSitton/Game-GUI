@@ -63,7 +63,7 @@ public class Heart extends Sprite implements Runnable {
 	}
 
 	/**
-	 * This method runs as long as the owner is not dead.</br>
+	 * This method runs as long as the owner is not dead.<br>
 	 * It checks the owner's health and remove the correct heart if the player has
 	 * lost health from the last check
 	 */
@@ -86,8 +86,8 @@ public class Heart extends Sprite implements Runnable {
 	}
 
 	/**
-	 * {@inheritDoc}</br>
-	 * </br>
+	 * {@inheritDoc}<br>
+	 * <br>
 	 * In addition, this sets the {@link Sprite#costumeConst costume constants} of
 	 * the heart to 1 in order to remove it from the screen
 	 */

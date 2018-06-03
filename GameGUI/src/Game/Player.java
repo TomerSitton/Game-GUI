@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 //TODO - move the communication stuff to Main and move the index variable to there as well
 /**
- * This class represents a player in the game.</br>
- * </br>
+ * This class represents a player in the game.<br>
+ * <br>
  * It handles its connection and communication to the server, its movement, its
  * state (such as the amount of health left) and its actions (such as attacking
  * the other characters)
@@ -61,8 +61,8 @@ public class Player extends Sprite {
 
 	// TODO - make this enum..?
 	/**
-	 * the attacking char of the player:</br>
-	 * N - not attacking</br>
+	 * the attacking char of the player:<br>
+	 * N - not attacking<br>
 	 * F - attacking
 	 */
 	private char attackingChar = 'N';
@@ -155,16 +155,21 @@ public class Player extends Sprite {
 	}
 
 	/**
-	 * send data to the server. </br>
-	 * In the game, the data sent to the the server is represented like this: </br>
-	 * </br>
-	 * "[newX,newY]_attackingChar\n" </br>
-	 * </br>
+	 * send data to the server. <br>
+	 * In the game, the data sent to the the server is represented like this: <br>
+	 * <br>
+	 * "[newX,newY]_attackingChar\n" <br>
+	 * <br>
 	 * So if for example my character moved from (0,0) to (10,12),and did not make
 	 * an attempt to attack, the data to be sent to the server will look like
-	 * this:</br>
+	 * this:<br>
 	 * "[10,12]_N\n"
 	 * 
+	 * @param newX
+	 *            - the new x coordinate of the player.
+	 * @param newY
+	 *            - the new y coordinate of the player.
+	 *            
 	 */
 	public void sendData(int newX, int newY) {
 		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
@@ -174,16 +179,16 @@ public class Player extends Sprite {
 	}
 
 	/**
-	 * Receive data from the server.</br>
+	 * Receive data from the server.<br>
 	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk ~
-	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" </br>
-	 * </br>
+	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" <br>
+	 * <br>
 	 * 
 	 * These numbers represent the locations of the 4 players at the given time, and
-	 * the "attk" represents the {@link #attackingChar}s field of the players.</br>
-	 * </br>
+	 * the "attk" represents the {@link #attackingChar}s field of the players.<br>
+	 * <br>
 	 * 
-	 * An example input for 4 players could look like this:</br>
+	 * An example input for 4 players could look like this:<br>
 	 * [100,350]_N ~ [529,350]_F ~ [958,350]_N ~ [1290,350]_N ~\n
 	 * 
 	 * @return - a string representing the locations of all players
@@ -239,8 +244,8 @@ public class Player extends Sprite {
 	}
 
 	/**
-	 * {@inheritDoc}</br>
-	 * </br>
+	 * {@inheritDoc}<br>
+	 * <br>
 	 * 
 	 * In addition to that, this method moves the attacks of the {@link Player}
 	 * 

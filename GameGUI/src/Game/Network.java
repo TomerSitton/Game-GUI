@@ -20,16 +20,18 @@ public interface Network {
 	public static final int SERVER_PORT = 2212;
 
 	/**
-	 * send data to the server. </br>
-	 * In the game, the data sent to the the server is represented like this: </br>
-	 * </br>
-	 * "[newX,newY]_attackingChar\n" </br>
-	 * </br>
+	 * send data to the server. <br>
+	 * In the game, the data sent to the the server is represented like this: <br>
+	 * <br>
+	 * "[newX,newY]_attackingChar\n" <br>
+	 * <br>
 	 * So if for example my character moved from (0,0) to (10,12), and did not make
 	 * an attempt to attack, the data to be sent to the server will look like
-	 * this:</br>
+	 * this:<br>
 	 * "[10,12]_N\n"
 	 * 
+	 * @param outputStreamToServer
+	 *            - the output stream of the player's socket
 	 *
 	 * @param data
 	 *            - the data to be sent to the server
@@ -47,19 +49,24 @@ public interface Network {
 	}
 
 	/**
-	 * Receive data from the server.</br>
+	 * Receive data from the server.<br>
 	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk ~
-	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" </br>
-	 * </br>
+	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" <br>
+	 * <br>
 	 * 
 	 * These numbers represent the locations of the 4 players at the given time, and
-	 * the "attk" represents the {@link #attackingChar}s field of the players.</br>
-	 * </br>
+	 * the "attk" represents the players' attacking char.
 	 * 
-	 * An example input for 4 players could look like this:</br>
+	 * An example input for 4 players could look like this:<br>
 	 * [100,350]_N ~ [529,350]_F ~ [958,350]_N ~ [1290,350]_N ~\n
 	 * 
+	 * @param inputStreamFromServer
+	 *            - the input stream of the player's socket
+	 * 
+	 * 
 	 * @return - a string representing the locations of all players
+	 * 
+	 * @see Player#setAttackingChar(char)
 	 */
 	public static String recieveDataFromServer(BufferedReader inputStreamFromServer) {
 		String msg = null;

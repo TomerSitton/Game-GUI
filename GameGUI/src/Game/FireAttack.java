@@ -1,8 +1,8 @@
 package Game;
 
 /**
- * This class represents a fire attack which a {@link Player} can create.</br>
- * </br>
+ * This class represents a fire attack which a {@link Player} can create.<br>
+ * <br>
  * 
  * The {@link FireAttack} will move until it hits an opposing {@link Player} or
  * reach the end of the screen.
@@ -58,13 +58,13 @@ public class FireAttack extends Sprite implements Flying {
 	/////////////////// other methods /////////////////
 
 	/**
-	 * This method handles the movement of the {@link FireAttack}.</br>
-	 * </br>
+	 * This method handles the movement of the {@link FireAttack}.<br>
+	 * <br>
 	 * 
 	 * It moves the {@link FireAttack} to the correct position according to its
 	 * {@link MoveableCharacter#speedX speedX} and its {@link #isMovingRight}
-	 * variables.</br>
-	 * </br>
+	 * variables.<br>
+	 * <br>
 	 * 
 	 * The method will remove the {@link FireAttack} if it hit an opposing player or
 	 * if it reached the end of the screen.
@@ -91,8 +91,8 @@ public class FireAttack extends Sprite implements Flying {
 	}
 
 	/**
-	 * {@inheritDoc}</br>
-	 * </br>
+	 * {@inheritDoc}<br>
+	 * <br>
 	 * 
 	 * Also, this method will remove the {@link FireAttack} from the
 	 * {@link Player#attacks} field.

@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 //TODO - make the movement of my character only via the server (and not locally), just like the movement of the other players
 // TODO - make a client class that handles commu with server (like the index and number of players etc.)
 /**
- * This is the main class of the project.</br>
- * </br>
+ * This is the main class of the project.<br>
+ * <br>
  * 
  * It handles the creation of the frame and the movement and actions of the
  * characters
@@ -179,7 +179,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * This is the thread's function handling the cycles of the game.</br>
+	 * This is the thread's function handling the cycles of the game.<br>
 	 * In each run this method calculates the X and Y values of the player, sends
 	 * them to the server, and then receives the positions of the rest of the
 	 * players and updates them on the frame using the {@link #updateFrame()}
@@ -208,12 +208,12 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * This method handles the keyboard requests:</br>
+	 * This method handles the keyboard requests:<br>
 	 * 1. It sets the {@link #dx} field according to the arrow key pressed (so if
 	 * the left key was pressed dx will be negative, and if the right key was
-	 * pressed it will be positive).</br>
+	 * pressed it will be positive).<br>
 	 * 2. If the space key has been pressed, it sets the attacking char of the
-	 * {@link Player player} to F.</br>
+	 * {@link Player player} to F.<br>
 	 * 3. If the up key was pressed, it makes the {@link Player player} try to jump
 	 * 
 	 * @param e
@@ -268,7 +268,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * This method handles the update of the game's state on the frame.</br>
+	 * This method handles the update of the game's state on the frame.<br>
 	 * It receives the data (location and attacking char) for each player from the
 	 * server, moves the players to the correct locations (using
 	 * {@link Player#moveToLocation(int, int)} and makes the attack if needed (using
@@ -312,6 +312,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	 * the main function. creates a new {@link Main} instance
 	 * 
 	 * @param args
+	 *            - the arguments of the main method
 	 */
 	public static void main(String[] args) {
 		new Main();

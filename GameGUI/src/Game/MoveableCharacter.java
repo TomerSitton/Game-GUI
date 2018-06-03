@@ -33,14 +33,14 @@ public abstract class MoveableCharacter extends JComponent {
 
 	/**
 	 * This is a boolean regarding the current state of the
-	 * {@link MoveableCharacter}:</br>
+	 * {@link MoveableCharacter}:<br>
 	 * isJumping is true when the {@link MoveableCharacter} is in the middle of a
-	 * jump</br>
+	 * jump<br>
 	 */
 	private boolean isJumping;
 	/**
 	 * This is a boolean regarding the current state of the
-	 * {@link MoveableCharacter}:</br>
+	 * {@link MoveableCharacter}:<br>
 	 * onTheGround is true when the {@link MoveableCharacter} is standing on an
 	 * instance of a {@link Surface}
 	 */
@@ -194,8 +194,8 @@ public abstract class MoveableCharacter extends JComponent {
 	 * This method changes the {@link #isJumping} field to be true for a short time,
 	 * thus making the {@link #getCurrentYSpeed(Surface[])} method return the
 	 * jumping speed of the {@link MoveableCharacter}, which makes it move upwards
-	 * for that short amount of time.</br>
-	 * </br>
+	 * for that short amount of time.<br>
+	 * <br>
 	 * 
 	 * note - if the {@link MoveableCharacter} is already in the middle of a jump or
 	 * is not standing on a {@link Surface}, this method will do nothing.
@@ -231,17 +231,18 @@ public abstract class MoveableCharacter extends JComponent {
 	 * 
 	 * 
 	 * This method determines the current Y speed of the
-	 * {@link MoveableCharacter}.</br>
-	 * </br>
+	 * {@link MoveableCharacter}.<br>
+	 * <br>
 	 * 
-	 * If it's trying to jump this method will return the {@link #speedY}
-	 * field.</br>
-	 * If it's standing on a surface this method will return 0.</br>
+	 * If it's trying to jump this method will return the {@link #speedY} field.<br>
+	 * If it's standing on a surface this method will return 0.<br>
 	 * If it's not jumping and not standing on the ground, this method will return
 	 * {@link WorldConstants.PHYSICS#FALLING_SPEED the constant falling speed.}
 	 * 
 	 * @param surfaces
 	 *            - the surfaces in the JFrame.
+	 * @return - the correct y speed of the {@link MoveableCharacter} according to
+	 *         its current state
 	 * 
 	 * @see Surface
 	 * @see WorldConstants.PHYSICS#FALLING_SPEED

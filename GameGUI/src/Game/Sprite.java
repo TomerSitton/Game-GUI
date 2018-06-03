@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 /**
  * This class represents a <a href=
  * "https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-spritesheet-animation--gamedev-13099"
- * >sprite animation</a> character.</br>
+ * >sprite animation</a> character.<br>
  * 
  * It handles the changing of the {@link Sprite}'s costumes.
  * 
@@ -65,14 +65,14 @@ public abstract class Sprite extends MoveableCharacter {
 
 	// TODO - use enum instead...?
 	/**
-	 * The costume constant of the {@link Sprite}.</br>
+	 * The costume constant of the {@link Sprite}.<br>
 	 * The images of the sprite are divided to rows and columns. Each two rows
 	 * represents the same type of image, but looking to the other direction.
 	 * Therefore, the costumeConst determines which type of the sprite images needs
-	 * to be used: </br>
-	 * 0 - first&second rows</br>
-	 * 2 - third&fourth rows</br>
-	 * 4 - fifth&sixth rows</br>
+	 * to be used: <br>
+	 * 0 - first and second rows<br>
+	 * 2 - third and fourth rows<br>
+	 * 4 - fifth and sixth rows<br>
 	 * etc...
 	 */
 	protected int costumeConst = 0;
@@ -172,8 +172,8 @@ public abstract class Sprite extends MoveableCharacter {
 	}
 
 	/**
-	 * {@inheritDoc}</br>
-	 * </br>
+	 * {@inheritDoc}<br>
+	 * <br>
 	 * In addition, it updates the {@link #currentColumn} and {@link #currentRow}
 	 * fields of the {@link Sprite} in order to fit to the correct costume of the
 	 * movement.
