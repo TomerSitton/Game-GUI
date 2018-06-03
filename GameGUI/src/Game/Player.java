@@ -169,13 +169,24 @@ public class Player extends Sprite {
 	 *            - the new x coordinate of the player.
 	 * @param newY
 	 *            - the new y coordinate of the player.
-	 *            
+	 * 
 	 */
 	public void sendLocationData(int newX, int newY) {
 		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
 			attackingChar = 'N';
+	}
+
+	/**
+	 * This method sends a string to the server using the
+	 * {@link Network#sendDataToServer(DataOutputStream, String)} method
+	 * 
+	 * @param msg
+	 *            - the message to send to the server
+	 */
+	public void sendString(String msg) {
+		Network.sendDataToServer(this.outputStreamToServer, msg);
 	}
 
 	/**
