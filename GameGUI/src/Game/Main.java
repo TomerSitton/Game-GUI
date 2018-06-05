@@ -246,6 +246,14 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// receive states of all the players and update the frame
 			updateFrame();
 			repaint();
+
+			// kill if outside of the frame
+			for (Player p : players) {
+				if (p.getY() > WorldConstants.Frame.HEIGHT)
+					for (int i=0; i< p.getHealth(); i++)
+						p.looseHealth();
+			}
+
 			try {
 				Thread.sleep(15);
 			} catch (InterruptedException e1) {
