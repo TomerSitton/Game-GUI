@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 import javax.lang.model.type.ArrayType;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,8 +35,8 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * an {@link ArrayType array} containing all the {@link Player players} in the
-	 * game
+	 * an {@link ArrayType array} containing all the {@link Player players} in
+	 * the game
 	 */
 	private Player[] players;
 
@@ -50,7 +51,8 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	private JFrame frame;
 
 	/**
-	 * an {@link ArrayType array} containing the {@link Surface surfaces} in the map
+	 * an {@link ArrayType array} containing the {@link Surface surfaces} in the
+	 * map
 	 */
 	private Surface[] surfaces = new Surface[1];
 
@@ -69,8 +71,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	/////////////////// constructors /////////////////
 
 	/**
-	 * This constructs a new {@link Main} by calling the {@link #initFrame()} and
-	 * {@link #initComponents()} methods and starting the main thread {@link #run()}
+	 * This constructs a new {@link Main} by calling the {@link #initFrame()}
+	 * and {@link #initComponents()} methods and starting the main thread
+	 * {@link #run()}
 	 * 
 	 * @see #initFrame()
 	 * @see #initComponents()
@@ -101,11 +104,11 @@ public class Main extends JPanel implements Runnable, KeyListener {
 	}
 
 	/**
-	 * returns an {@link ArrayType array} containing the starting x locations of the
-	 * players according to the number of players in the game
+	 * returns an {@link ArrayType array} containing the starting x locations of
+	 * the players according to the number of players in the game
 	 * 
-	 * @return - an {@link ArrayType array} containing the starting x locations of
-	 *         the players
+	 * @return - an {@link ArrayType array} containing the starting x locations
+	 *         of the players
 	 */
 	private int[] getPlayersStartingXPositions() {
 		int[] locations = new int[players.length];
@@ -145,7 +148,38 @@ public class Main extends JPanel implements Runnable, KeyListener {
 		this.add(myPlayer);
 
 		// initialize other players
-		players = new Player[Integer.parseInt(myPlayer.recieveData())];
+		String serverMsg = myPlayer.recieveData();
+
+		while (!serverMsg.equals("start game")) {
+
+			// no msg received
+			if (serverMsg == null || serverMsg == "")
+				continue;
+
+			// the msg is "we are %d players. more players?"
+			if (serverMsg.contains("more players?")) {
+				int numberOfPlayers = Integer.parseInt(Character.toString(serverMsg.charAt(7)));
+				switch (JOptionPane.showConfirmDialog(null,
+						"we are " + numberOfPlayers + ". are there more players wishing to join the game?",
+						"other players?", JOptionPane.YES_NO_OPTION)) {
+				case JOptionPane.YES_OPTION:
+					myPlayer.sendString("yes");
+					break;
+				default:
+					myPlayer.sendString("no");
+					break;
+				}
+
+			}
+
+			// the msg is "the final number of players is %d"
+			else if (serverMsg.contains("the final number of players is"))
+				players = new Player[Integer.parseInt(serverMsg.substring(serverMsg.length() - 1))];
+
+			// receiving data again
+			serverMsg = myPlayer.recieveData();
+		}
+
 		for (int i = 0; i < players.length; i++) {
 			int startingX = getPlayersStartingXPositions()[i];
 			int startingY = WorldConstants.GROUND.Y - WorldConstants.GROUND.HEIGHT - Player.HEIGHT;
@@ -182,10 +216,10 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * This is the thread's function handling the cycles of the game.<br>
-	 * In each run this method calculates the X and Y values of the player, sends
-	 * them to the server, and then receives the positions of the rest of the
-	 * players and updates them on the frame using the {@link #updateFrame()}
-	 * method.
+	 * In each run this method calculates the X and Y values of the player,
+	 * sends them to the server, and then receives the positions of the rest of
+	 * the players and updates them on the frame using the
+	 * {@link #updateFrame()} method.
 	 * 
 	 * @see #updateFrame()
 	 */
@@ -239,12 +273,13 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * This method handles the keyboard requests:<br>
-	 * 1. It sets the {@link #dx} field according to the arrow key pressed (so if
-	 * the left key was pressed dx will be negative, and if the right key was
+	 * 1. It sets the {@link #dx} field according to the arrow key pressed (so
+	 * if the left key was pressed dx will be negative, and if the right key was
 	 * pressed it will be positive).<br>
 	 * 2. If the space key has been pressed, it sets the attacking char of the
 	 * {@link Player player} to F.<br>
-	 * 3. If the up key was pressed, it makes the {@link Player player} try to jump
+	 * 3. If the up key was pressed, it makes the {@link Player player} try to
+	 * jump
 	 * 
 	 * @param e
 	 *            - the {@link KeyEvent}
@@ -299,35 +334,36 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 	/**
 	 * This method handles the update of the game's state on the frame.<br>
-	 * It receives the data (location and attacking char) for each player from the
-	 * server, moves the players to the correct locations (using
-	 * {@link Player#moveToLocation(int, int)} and makes the attack if needed (using
-	 * the {@link Player#attack()} method)
+	 * It receives the data (location and attacking char) for each player from
+	 * the server, moves the players to the correct locations (using
+	 * {@link Player#moveToLocation(int, int)} and makes the attack if needed
+	 * (using the {@link Player#attack()} method)
 	 * 
 	 * @see Player#moveToLocation(int, int)
 	 * @see Player#attack()
 	 */
 	public void updateFrame() {
 		/*
-		 * Receive data from server - looking like this: "[22,32]_N ~ [100,110]_F ~ \n"
+		 * Receive data from server - looking like this:
+		 * "[22,32]_N ~ [100,110]_F ~ \n"
 		 */
 		String data = myPlayer.recieveData();
 		/*
-		 * the state of each player: "[22,32]_N" for player one and "[100,110]_F" for
-		 * player two
+		 * the state of each player: "[22,32]_N" for player one and
+		 * "[100,110]_F" for player two
 		 */
 		String states[] = data.split(" ~ ");
 
 		for (int i = 0; i < players.length; i++) {
 			/*
-			 * splitting each state to the wanted values: values[0] = location (list)
-			 * values[1] = attackingChar (char)
+			 * splitting each state to the wanted values: values[0] = location
+			 * (list) values[1] = attackingChar (char)
 			 */
 			String[] values = states[i].split("_");
 
 			/*
-			 * the location of the player, represented by an array which its values are "x"
-			 * and "y"
+			 * the location of the player, represented by an array which its
+			 * values are "x" and "y"
 			 */
 			String[] location = values[0].replace("]", "").replace("[", "").split(",");
 
