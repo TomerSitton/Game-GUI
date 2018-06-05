@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 import javax.lang.model.type.ArrayType;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -250,7 +249,7 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// kill if outside of the frame
 			for (Player p : players) {
 				if (p.getY() > WorldConstants.Frame.HEIGHT)
-					for (int i=0; i< p.getHealth(); i++)
+					while (p.getHealth() > 0)
 						p.looseHealth();
 			}
 
