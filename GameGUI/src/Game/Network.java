@@ -13,7 +13,7 @@ public interface Network {
 	/**
 	 * The IP address of the server
 	 */
-	public static final String SERVER_IP = "10.0.0.8";
+	public static final String SERVER_IP = "192.168.173.134";
 	/**
 	 * The port on which the server runs
 	 */
