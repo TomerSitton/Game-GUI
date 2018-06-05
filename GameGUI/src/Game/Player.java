@@ -84,8 +84,8 @@ public class Player extends Sprite {
 	 * @param y
 	 *            - the starting Y position of the {@link Player}
 	 * @param isMyPlayer
-	 *            - true if the player is the local player (so a connetion to the
-	 *            server needs to be set up)
+	 *            - true if the player is the local player (so a connetion to
+	 *            the server needs to be set up)
 	 */
 	public Player(int x, int y, boolean isMyPlayer) {
 		super(x, y, URL, ROWS, COLUMNS, WIDTH, HEIGHT, SPEED_X, SPEED_Y);
@@ -128,6 +128,16 @@ public class Player extends Sprite {
 		return attacks;
 	}
 
+	/////////////////// setters /////////////////
+	/**
+	 * sets the health of the player
+	 * 
+	 * @param health
+	 *            the new health of the player
+	 */
+	public void setHealth(int health) {
+		this.health = health;
+	}
 	/////////////////// other methods /////////////////
 
 	/**
@@ -156,13 +166,14 @@ public class Player extends Sprite {
 
 	/**
 	 * send data to the server. <br>
-	 * In the game, the data sent to the the server is represented like this: <br>
+	 * In the game, the data sent to the the server is represented like this:
+	 * <br>
 	 * <br>
 	 * "[newX,newY]_attackingChar\n" <br>
 	 * <br>
-	 * So if for example my character moved from (0,0) to (10,12),and did not make
-	 * an attempt to attack, the data to be sent to the server will look like
-	 * this:<br>
+	 * So if for example my character moved from (0,0) to (10,12),and did not
+	 * make an attempt to attack, the data to be sent to the server will look
+	 * like this:<br>
 	 * "[10,12]_N\n"
 	 * 
 	 * @param newX
@@ -191,12 +202,13 @@ public class Player extends Sprite {
 
 	/**
 	 * Receive data from the server.<br>
-	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk ~
-	 * [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" <br>
+	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk
+	 * ~ [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" <br>
 	 * <br>
 	 * 
-	 * These numbers represent the locations of the 4 players at the given time, and
-	 * the "attk" represents the {@link #attackingChar}s field of the players.<br>
+	 * These numbers represent the locations of the 4 players at the given time,
+	 * and the "attk" represents the {@link #attackingChar}s field of the
+	 * players.<br>
 	 * <br>
 	 * 
 	 * An example input for 4 players could look like this:<br>
@@ -230,8 +242,8 @@ public class Player extends Sprite {
 
 	/**
 	 * Reduce the value of {@link #health} by 1 and set the
-	 * {@link Sprite#costumeConst costume constant} to 2 for a short time in order
-	 * to use the correct type of costume
+	 * {@link Sprite#costumeConst costume constant} to 2 for a short time in
+	 * order to use the correct type of costume
 	 * 
 	 * @see Sprite#costumeConst
 	 */
