@@ -183,7 +183,7 @@ public class Player extends Sprite {
 	 * 
 	 */
 	public void sendLocationData(int newX, int newY) {
-		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "_" + this.getHealth() + "\n";
+		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "#" + this.getHealth() + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
 			attackingChar = 'N';
