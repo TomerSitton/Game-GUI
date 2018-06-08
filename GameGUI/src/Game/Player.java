@@ -202,9 +202,9 @@ public class Player extends Sprite {
 
 	/**
 	 * Receive data from the server.<br>
-	 * The data should look like this: "[newX1,newY1]_attk_hlth ~
-	 * [newX2,newY2]_attk_hlth ~ [newX3,newY3]_attk_hlth ~
-	 * [newX4,newY4]_attk_hlth ~\n" <br>
+	 * The data should look like this: "[newX1,newY1]_attk#hlth ~
+	 * [newX2,newY2]_attk#hlth ~ [newX3,newY3]_attk#hlth ~
+	 * [newX4,newY4]_attk#hlth ~\n" <br>
 	 * <br>
 	 * 
 	 * These numbers represent the locations of the 4 players at the given time,
@@ -213,7 +213,7 @@ public class Player extends Sprite {
 	 * <br>
 	 * 
 	 * An example input for 4 players could look like this:<br>
-	 * [100,350]_N_2 ~ [529,350]_F_1 ~ [958,350]_N_3 ~ [1290,350]_N_1 ~\n
+	 * [100,350]_N#2 ~ [529,350]_F#1 ~ [958,350]_N#3 ~ [1290,350]_N#1 ~\n
 	 * 
 	 * @return - a string representing the locations of all players
 	 */
