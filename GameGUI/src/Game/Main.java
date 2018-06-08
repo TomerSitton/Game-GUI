@@ -158,16 +158,18 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// the msg is "we are %d players. more players?"
 			if (serverMsg.contains("more players?")) {
 				int numberOfPlayers = Integer.parseInt(Character.toString(serverMsg.charAt(7)));
-				switch (JOptionPane.showConfirmDialog(null,
-						"we are " + numberOfPlayers + ". are there more players wishing to join the game?",
-						"other players?", JOptionPane.YES_NO_OPTION)) {
-				case JOptionPane.YES_OPTION:
-					myPlayer.sendString("yes");
-					break;
-				default:
-					myPlayer.sendString("no");
-					break;
-				}
+//				switch (JOptionPane.showConfirmDialog(null,
+//						"we are " + numberOfPlayers + ". are there more players wishing to join the game?",
+//						"other players?", JOptionPane.YES_NO_OPTION)) {
+//				case JOptionPane.YES_OPTION:
+//					myPlayer.sendString("yes");
+//					break;
+//				default:
+//					myPlayer.sendString("no");
+//					break;
+//				}
+				
+				myPlayer.sendString("no");
 
 			}
 
@@ -376,7 +378,9 @@ public class Main extends JPanel implements Runnable, KeyListener {
 
 			players[i].moveToLocation(Integer.parseInt(location[0]), Integer.parseInt(location[1]));
 
-			if (values[1].equals("F") && players[i].getAttacks().size() < 3)
+			String[] extras = values[1].split("#");
+			
+			if (extras[0].equals("F") && players[i].getAttacks().size() < 3)
 				players[i].attack();
 		}
 	}
