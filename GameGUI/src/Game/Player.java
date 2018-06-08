@@ -169,12 +169,12 @@ public class Player extends Sprite {
 	 * In the game, the data sent to the the server is represented like this:
 	 * <br>
 	 * <br>
-	 * "[newX,newY]_attackingChar\n" <br>
+	 * "[newX,newY]_attackingChar_health\n" <br>
 	 * <br>
 	 * So if for example my character moved from (0,0) to (10,12),and did not
 	 * make an attempt to attack, the data to be sent to the server will look
 	 * like this:<br>
-	 * "[10,12]_N\n"
+	 * "[10,12]_N_2\n"
 	 * 
 	 * @param newX
 	 *            - the new x coordinate of the player.
@@ -183,7 +183,7 @@ public class Player extends Sprite {
 	 * 
 	 */
 	public void sendLocationData(int newX, int newY) {
-		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "\n";
+		String state = "[" + newX + "," + newY + "]_" + this.attackingChar + "_" + this.getHealth() + "\n";
 		Network.sendDataToServer(this.outputStreamToServer, state);
 		if (attackingChar == 'F')
 			attackingChar = 'N';
@@ -202,8 +202,9 @@ public class Player extends Sprite {
 
 	/**
 	 * Receive data from the server.<br>
-	 * The data should look like this: "[newX1,newY1]_attk ~ [newX2,newY2]_attk
-	 * ~ [newX3,newY3]_attk ~ [newX4,newY4]_attk ~\n" <br>
+	 * The data should look like this: "[newX1,newY1]_attk_hlth ~
+	 * [newX2,newY2]_attk_hlth ~ [newX3,newY3]_attk_hlth ~
+	 * [newX4,newY4]_attk_hlth ~\n" <br>
 	 * <br>
 	 * 
 	 * These numbers represent the locations of the 4 players at the given time,
@@ -212,7 +213,7 @@ public class Player extends Sprite {
 	 * <br>
 	 * 
 	 * An example input for 4 players could look like this:<br>
-	 * [100,350]_N ~ [529,350]_F ~ [958,350]_N ~ [1290,350]_N ~\n
+	 * [100,350]_N_2 ~ [529,350]_F_1 ~ [958,350]_N_3 ~ [1290,350]_N_1 ~\n
 	 * 
 	 * @return - a string representing the locations of all players
 	 */
