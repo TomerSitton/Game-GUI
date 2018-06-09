@@ -158,16 +158,16 @@ public class Main extends JPanel implements Runnable, KeyListener {
 			// the msg is "we are %d players. more players?"
 			if (serverMsg.contains("more players?")) {
 				int numberOfPlayers = Integer.parseInt(Character.toString(serverMsg.charAt(7)));
-//				switch (JOptionPane.showConfirmDialog(null,
-//						"we are " + numberOfPlayers + ". are there more players wishing to join the game?",
-//						"other players?", JOptionPane.YES_NO_OPTION)) {
-//				case JOptionPane.YES_OPTION:
-//					myPlayer.sendString("yes");
-//					break;
-//				default:
-//					myPlayer.sendString("no");
-//					break;
-//				}
+				switch (JOptionPane.showConfirmDialog(null,
+						"we are " + numberOfPlayers + ". are there more players wishing to join the game?",
+						"other players?", JOptionPane.YES_NO_OPTION)) {
+				case JOptionPane.YES_OPTION:
+					myPlayer.sendString("yes");
+					break;
+				default:
+					myPlayer.sendString("no");
+					break;
+				}
 				
 				myPlayer.sendString("no");
 
